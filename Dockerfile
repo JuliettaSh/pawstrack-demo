@@ -14,7 +14,7 @@ RUN mkdir -p /app/public/imagenes
 RUN chmod -R 777 /app/public/imagenes
 
 # Exponer el puerto en el que corre la aplicación
-EXPOSE 8080
+#EXPOSE 8080
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
