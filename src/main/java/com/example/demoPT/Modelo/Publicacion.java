@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@Entity 
+@Entity //clase publicacion con sus atributos y constructores
 @Table(name = "publicaciones")
 public class Publicacion implements Serializable{
     @Id
@@ -20,7 +20,7 @@ public class Publicacion implements Serializable{
     private String descripcion;
     private String archivoFoto;
     
-    @ManyToOne
+    @ManyToOne//relacion con el usuario
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
     

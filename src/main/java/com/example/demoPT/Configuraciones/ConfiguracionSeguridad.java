@@ -16,37 +16,37 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class ConfiguracionSeguridad {
-
+    //encripta las contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-     @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
-                    .requestMatchers("/publicaciones/crear").authenticated() // Requiere autenticación
+                    .requestMatchers("/publicaciones/crear").authenticated() // Requiere autenticación antes de entrar a ese apartado
                     .requestMatchers("/publicaciones/editar").authenticated() // Requiere autenticación
                     .requestMatchers("/publicaciones/borrar").authenticated() // Requiere autenticación
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
+                .loginPage("/login")//apenas se ingresa la url te lleva a esta seccion
+                .defaultSuccessUrl("/home", true)//una vez logueado y autenticado te lleva a la pagina de inicio home
                 .permitAll()
             )
             .logout(logout -> logout
-                .logoutUrl("/logout")
+                .logoutUrl("/logout")//cuando se cierra la sesion te redirege al login de nuevo
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             );
 
         return http.build();
     }
-
+    //buscamos al usuario logueado con el nombre
     @Bean
     public UserDetailsService userDetailsService(RepositorioUsuario userRepository) {
         return username -> userRepository.findByUsername(username)
@@ -56,63 +56,3 @@ public class ConfiguracionSeguridad {
     }
 }
 
-/*package com.example.demoPT.Configuraciones;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import static org.springframework.security.config.Customizer.withDefaults;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-
-@Configuration
-//@EnableWebSecurity
-public class ConfiguracionSeguridad {
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/**").hasRole("ADMIN") // Solo admin puede acceder a rutas /admin
-                .requestMatchers("/user/**").hasRole("USER") // Solo USER puede acceder a rutas /user
-                .requestMatchers("/**").authenticated() // Cualquier usuario autenticado puede acceder a publicaciones
-                .anyRequest().permitAll() // Permite el acceso sin autenticación a cualquier otra ruta
-                
-                )
-                .formLogin(withDefaults()) // Usa login por defecto de Spring Security
-                .logout(logout -> logout.logoutSuccessUrl("/login?logout"));
-
-
-        return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-}
-*/

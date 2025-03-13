@@ -4,7 +4,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
-public class PublicacionDto {
+public class PublicacionDto {//clase DTO es para transportar datos entre diferentes capas de una aplicación
+    //Evitamos exponer directamente las entidades del modelo asi
+    
+    //si no se llenan los campos sale el mensaje
     @NotEmpty(message = "Se requiere el nombre")
     private String nombre_mascota;
     

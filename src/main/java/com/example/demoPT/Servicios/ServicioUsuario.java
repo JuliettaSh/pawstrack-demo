@@ -15,23 +15,14 @@ public class ServicioUsuario {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    //funcion para encontrar a un usario por el nombre
     public Optional<Usuario> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
+    //funcion para guardar al usario y ponerle un rol
     public void saveUser(Usuario user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
         userRepository.save(user);
     }
 }
-
-/*
-
-package com.example.demoPT.Servicios;
-
-public class ServicioUsuario {
-    
-}
-*/

@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
+@Entity//clase usuario con sus atributos y constructores
 @Table(name = "usuarios")
 public class Usuario {
     @Id

@@ -9,7 +9,7 @@ public class ImplUsuarioDetails implements UserDetails {
     private final String username;
     private final String password;
 
-    public ImplUsuarioDetails(Usuario usuario) { // 💡 Constructor correcto
+    public ImplUsuarioDetails(Usuario usuario) { // Constructor 
         this.username = usuario.getUsername();
         this.password = usuario.getPassword();
     }

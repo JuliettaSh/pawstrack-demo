@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/publicaciones")
+@RequestMapping("/publicaciones")//como pedido principal, esta el de publicaciones
+//por ejemplo /publicaciones/crear para crear una publicacion
 public class ControladorPublicacion {
 
     @Autowired
@@ -33,17 +35,7 @@ public class ControladorPublicacion {
     @Autowired
     private RepositorioUsuario repoU;
 
-    
-    /*
-    @GetMapping({"", "/"})
-    public String mostrarListaPublicaciones(Model modelo) {
-        List<Publicacion> publicaciones = repo.findAll();
-        modelo.addAttribute("publicaciones", publicaciones);
-        return "index";
-    }
-   */
-
-    @GetMapping("/crear")
+    @GetMapping("/crear")//cuando seleccionamos el boton para crear publicaciones, se redirige a esta pantalla
     public String mostrarPaginaCrear(Model modelo) {
         // Verifica si el usuario está autenticado
         if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
@@ -51,51 +43,46 @@ public class ControladorPublicacion {
             modelo.addAttribute("publiDto", publiDto);
             return "publicaciones/CrearPublicacion";  // Si está autenticado, muestra la página para crear publicación
         } else {
+            JOptionPane.showMessageDialog(null, "Usuario no autenticado");//mensajede error
             return "redirect:/login";  // Si no está autenticado, redirige al login
         }
-        //PublicacionDto publiDto = new PublicacionDto();
-        //modelo.addAttribute("publiDto", publiDto);
-        //return "publicaciones/CrearPublicacion";
     }
 
-@PostMapping("/crear")
+@PostMapping("/crear")//una vez que vimos que esta autenticado pasamos a la creacion de la publicacion
 public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiDto, @RequestParam("archivoFoto") MultipartFile archivoFoto,       Principal principal) {
     // Obtener el usuario autenticado
     String username = principal.getName();
     
-    
     Usuario usuario = repoU.findByUsername(username)
                         .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-    // Crear la publicación
+    // Crear la publicación seteando los atributos que nos dieron en el form
     Publicacion publicacion = new Publicacion();
     publicacion.setNombreMascota(publiDto.getNombre_mascota());
     publicacion.setDireccion(publiDto.getDireccion());
     publicacion.setTelefono(publiDto.getTelefono());
     publicacion.setDescripcion(publiDto.getDescripcion());
-    publicacion.setUsuario(usuario); // Asignar usuario autenticado
+    publicacion.setUsuario(usuario); // Asignar usuario autenticado para hacer la relacion
 
-    // Guardar la foto si es necesario
+    // Guardar la foto 
     if (!archivoFoto.isEmpty()) {
         String nombreArchivo = archivoFoto.getOriginalFilename();
         publicacion.setArchivoFoto(nombreArchivo);
-        // Aquí puedes agregar lógica para guardar la foto en un directorio
     }
 
     // Guardar en la base de datos
     repo.save(publicacion);
-
+    //redirigimoa a la pantalla de "mis publicaciones"
     return "redirect:/index";
 }
 
     //funcion para editar la publicacion
-
     @GetMapping("/editar")
-    public String mostrarPaginaEditar(Model modelo, @RequestParam int id) {
+    public String mostrarPaginaEditar(Model modelo, @RequestParam int id) {// model permite enviar datos a la vista
         try {
-            Publicacion publicacion = repo.findById(id).get();//lo convierte en tipo publicacion
-            modelo.addAttribute("publicacion", publicacion);
-
+            Publicacion publicacion = repo.findById(id).get();//Busca en la base de datos una Publicacion con el id que le mandamos y lo convierte en tipo publicacion
+            modelo.addAttribute("publicacion", publicacion);//Guarda la publicación en el modelo para que la vista (EditarPublicacion.html) pueda acceder a ella
+            //crea una publicacion nueva para no tener que usar la original por las dudas
             PublicacionDto publiDto = new PublicacionDto();
             publiDto.setNombre_mascota(publicacion.getNombreMascota());
             publiDto.setTelefono(publicacion.getTelefono());
@@ -107,7 +94,7 @@ public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiD
             System.out.println("Excepcion: " + e.getMessage());
             return "redirect:/index";
         }
-
+        //Retorna la plantilla publicaciones/EditarPublicacion.html. Esta vista muestra el formulario de edición
         return "publicaciones/EditarPublicacion";
 
     }
@@ -152,7 +139,7 @@ public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiD
         } catch (Exception e) {
             System.out.println("Excepcion: " + e.getMessage());
         }
-
+        //redirigimos al apartado de "mis publicaciones"
         return "redirect:/index";
     }
 
@@ -174,6 +161,7 @@ public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiD
         } catch (Exception e) {
             System.out.println("Excepcion: " + e.getMessage());
         }
+        //redirigimos al apartado de "mis publicaciones"
         return "redirect:/index";
     }
 
