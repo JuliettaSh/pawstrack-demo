@@ -153,13 +153,18 @@
         <!-- Botones -->
         <div class="form-group">
            <button type="submit" class="btn">Guardar Publicación</button>
-        <a th:href="@{/home}" class="btn back-btn">Cancelar</a>  
+        <button onclick="cancelar()">Cancelar</button>
         </div>
        
 
     </form>
 </div>
+        <script>
+            function cancelar() {
+                window.history.back();
+            }
 
+        </script>
 </body>
 </html>
 

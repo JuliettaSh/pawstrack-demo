@@ -5,6 +5,7 @@ import com.example.demoPT.Modelo.Usuario;
 import com.example.demoPT.Repositorios.RepositorioPublicaciones;
 import com.example.demoPT.Repositorios.RepositorioUsuario;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 
 public class AuthController {
-    
+
     private final RepositorioUsuario userRepository;
     private final PasswordEncoder passwordEncoder;
     @Autowired
@@ -41,7 +42,13 @@ public class AuthController {
     @GetMapping("/home")//el usuario quiere ir al home (una vez autenticado) y muestra el html
     public String mostrarHome(Model modelo) {
         List<Publicacion> publicaciones = repo.findAll();//muestra todas las publicacines subidas
-        modelo.addAttribute("publicaciones", publicaciones);
+        //modelo.addAttribute("publicaciones", publicaciones);
+        // Asegurar que la lista no sea nula
+        if (publicaciones == null || publicaciones.isEmpty()) {
+            modelo.addAttribute("publicaciones", new ArrayList<>());
+        } else {
+            modelo.addAttribute("publicaciones", publicaciones);
+        }
         return "home";
     }
 
