@@ -150,18 +150,12 @@
             <textarea id="descripcion" name="descripcion" th:field="${publiDto.descripcion}" required></textarea>
         </div>    
     </form>
-    <!-- Botones -->
+</div>
+<!-- Botones -->
         <div class="form-group">
            <button type="submit" class="btn">Guardar Publicación</button>
-        <button onclick="cancelar()">Cancelar</button>
+        <a th:href="@{/home}" class="btn back-btn">Cancelar</a>
         </div>
-</div>
-        <script>
-            function cancelar() {
-                window.history.back();
-            }
-
-        </script>
 </body>
 </html>
 

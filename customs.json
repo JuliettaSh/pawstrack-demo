@@ -1,8 +1,20 @@
 {
     "elements": {},
     "attributes": {
+        "th:object": {
+            "context": "form"
+        },
+        "th:src": {
+            "context": "img"
+        },
         "th:href": {
             "context": "a"
+        },
+        "th:field": {
+            "context": "textarea"
+        },
+        "th:value": {
+            "context": "input"
         }
     }
 }
