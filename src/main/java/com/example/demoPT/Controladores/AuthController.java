@@ -49,7 +49,7 @@ public class AuthController {
         } else {
             modelo.addAttribute("publicaciones", publicaciones);
         }
-        return "home";
+        return "redirect:/home";
     }
 
     @GetMapping("/index")//este es el apartado de "mis publicaciones" donde solo se ven las publicaciones que ese usuario hizo
@@ -71,7 +71,6 @@ public class AuthController {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         userRepository.save(usuario);
         //mostramos un mensaje y redirigimos al login
-        JOptionPane.showMessageDialog(null, "Usuario creado correctamente");
         return "redirect:/login";
     }
 }
