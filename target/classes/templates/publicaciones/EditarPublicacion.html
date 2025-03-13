@@ -107,7 +107,7 @@
 <div class="container">
     <h1>Editar Nueva Publicación</h1>
 
-    <form method="POST" enctype="multipart/form-data" th:action="@{/publicaciones/editar}" th:object="${publiDto}">
+    <form method="POST" enctype="multipart/form-data" th:action="@{${#httpServletRequest.contextPath} + '/publicaciones/crear'}" th:object="${publiDto}">
         
         <!-- ID -->
         <div class="form-group">
@@ -148,16 +148,13 @@
         <div class="form-group">
             <label for="descripcion">Descripción</label>
             <textarea id="descripcion" name="descripcion" th:field="${publiDto.descripcion}" required></textarea>
-        </div>
-
-        <!-- Botones -->
+        </div>    
+    </form>
+    <!-- Botones -->
         <div class="form-group">
            <button type="submit" class="btn">Guardar Publicación</button>
         <button onclick="cancelar()">Cancelar</button>
         </div>
-       
-
-    </form>
 </div>
         <script>
             function cancelar() {
