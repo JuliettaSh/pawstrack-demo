@@ -38,8 +38,9 @@ public class ConfiguracionSeguridad {
                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                .loginPage("/login")//apenas se ingresa la url te lleva a esta seccion
-                .defaultSuccessUrl("/home", true)//una vez logueado y autenticado te lleva a la pagina de inicio home
+                .loginPage("/login") // Página de inicio de sesión
+                .defaultSuccessUrl("/home", true) // Página a la que se redirige al iniciar sesión correctamente
+                .failureUrl("/login?error=true") // Redirige a login con parámetro error si falla la autenticación
                 .permitAll()
                 )
                 .logout(logout -> logout
