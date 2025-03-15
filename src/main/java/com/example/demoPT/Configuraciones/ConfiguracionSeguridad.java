@@ -2,6 +2,9 @@ package com.example.demoPT.Configuraciones;
 
 import com.example.demoPT.Modelo.ImplUsuarioDetails;
 import com.example.demoPT.Repositorios.RepositorioUsuario;
+import jakarta.servlet.Filter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.support.ErrorPageFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class ConfiguracionSeguridad {
+
     //encripta las contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,27 +29,28 @@ public class ConfiguracionSeguridad {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
-                    .requestMatchers("/publicaciones/crear").authenticated() // Requiere autenticación antes de entrar a ese apartado
-                    .requestMatchers("/publicaciones/editar").authenticated() // Requiere autenticación
-                    .requestMatchers("/publicaciones/borrar").authenticated() // Requiere autenticación
+                .requestMatchers("/publicaciones/crear").authenticated() // Requiere autenticación antes de entrar a ese apartado
+                .requestMatchers("/publicaciones/editar").authenticated() // Requiere autenticación
+                .requestMatchers("/publicaciones/borrar").authenticated() // Requiere autenticación
                 .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
+                )
+                .formLogin(form -> form
                 .loginPage("/login")//apenas se ingresa la url te lleva a esta seccion
                 .defaultSuccessUrl("/home", true)//una vez logueado y autenticado te lleva a la pagina de inicio home
                 .permitAll()
-            )
-            .logout(logout -> logout
+                )
+                .logout(logout -> logout
                 .logoutUrl("/logout")//cuando se cierra la sesion te redirege al login de nuevo
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
-            );
+                );
 
         return http.build();
     }
+
     //buscamos al usuario logueado con el nombre
     @Bean
     public UserDetailsService userDetailsService(RepositorioUsuario userRepository) {
@@ -54,5 +59,18 @@ public class ConfiguracionSeguridad {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
     }
-}
 
+    @Bean
+    public ErrorPageFilter errorPageFilter() {
+        return new ErrorPageFilter();
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> disableSpringBootErrorFilter(ErrorPageFilter filter) {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(filter);
+        filterRegistrationBean.setEnabled(false);
+
+        return filterRegistrationBean;
+    }
+}
