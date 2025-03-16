@@ -49,7 +49,7 @@ public class AuthController {
         } else {
             modelo.addAttribute("publicaciones", publicaciones);
         }
-        return "redirect:/home";
+        return "home";
     }
 
     @GetMapping("/index")//este es el apartado de "mis publicaciones" donde solo se ven las publicaciones que ese usuario hizo
