@@ -70,7 +70,7 @@ public class AuthController {
         //aca se registra el usuario y se guardan sus datos para redirigirlo al login
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         userRepository.save(usuario);
-        //mostramos un mensaje y redirigimos al login
-        return "redirect:/login";
+        //mostramos el registro
+        return "register";
     }
 }
