@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -101,7 +100,9 @@ public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiD
     }
 
     @PostMapping("/editar")
-    public String actualizarPublicacion(Model modelo, @RequestParam int id, @Valid @ModelAttribute PublicacionDto publicDto, BindingResult resultado) {
+    public String actualizarPublicacion(@RequestParam int id, 
+                                    @Valid @ModelAttribute("publiDto") PublicacionDto publicDto, 
+                                    BindingResult resultado, Model modelo) {
 
         try {
             Publicacion publicacion = repo.findById(id).get();
