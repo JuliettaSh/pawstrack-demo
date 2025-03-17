@@ -48,33 +48,33 @@ public class ControladorPublicacion {
         }
     }
 
-@PostMapping("/crear")//una vez que vimos que esta autenticado pasamos a la creacion de la publicacion
-public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiDto, @RequestParam("archivoFoto") MultipartFile archivoFoto,       Principal principal) {
-    // Obtener el usuario autenticado
-    String username = principal.getName();
-    
-    Usuario usuario = repoU.findByUsername(username)
-                        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    @PostMapping("/crear")//una vez que vimos que esta autenticado pasamos a la creacion de la publicacion
+    public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiDto, @RequestParam("archivoFoto") MultipartFile archivoFoto, Principal principal) {
+        // Obtener el usuario autenticado
+        String username = principal.getName();
 
-    // Crear la publicación seteando los atributos que nos dieron en el form
-    Publicacion publicacion = new Publicacion();
-    publicacion.setNombreMascota(publiDto.getNombre_mascota());
-    publicacion.setDireccion(publiDto.getDireccion());
-    publicacion.setTelefono(publiDto.getTelefono());
-    publicacion.setDescripcion(publiDto.getDescripcion());
-    publicacion.setUsuario(usuario); // Asignar usuario autenticado para hacer la relacion
+        Usuario usuario = repoU.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-    // Guardar la foto 
-    if (!archivoFoto.isEmpty()) {
-        String nombreArchivo = archivoFoto.getOriginalFilename();
-        publicacion.setArchivoFoto(nombreArchivo);
+        // Crear la publicación seteando los atributos que nos dieron en el form
+        Publicacion publicacion = new Publicacion();
+        publicacion.setNombreMascota(publiDto.getNombre_mascota());
+        publicacion.setDireccion(publiDto.getDireccion());
+        publicacion.setTelefono(publiDto.getTelefono());
+        publicacion.setDescripcion(publiDto.getDescripcion());
+        publicacion.setUsuario(usuario); // Asignar usuario autenticado para hacer la relacion
+
+        // Guardar la foto 
+        if (!archivoFoto.isEmpty()) {
+            String nombreArchivo = archivoFoto.getOriginalFilename();
+            publicacion.setArchivoFoto(nombreArchivo);
+        }
+
+        // Guardar en la base de datos
+        repo.save(publicacion);
+        //redirigimoa a la pantalla de "mis publicaciones"
+        return "redirect:/index";
     }
-
-    // Guardar en la base de datos
-    repo.save(publicacion);
-    //redirigimoa a la pantalla de "mis publicaciones"
-    return "redirect:/index";
-}
 
     //funcion para editar la publicacion
     @GetMapping("/editar")
@@ -100,9 +100,7 @@ public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiD
     }
 
     @PostMapping("/editar")
-    public String actualizarPublicacion(@RequestParam int id, 
-                                    @Valid @ModelAttribute("publiDto") PublicacionDto publicDto, 
-                                    BindingResult resultado, Model modelo) {
+    public String actualizarPublicacion(Model modelo, @RequestParam int id, @Valid @ModelAttribute PublicacionDto publicDto, BindingResult resultado) {
 
         try {
             Publicacion publicacion = repo.findById(id).get();
@@ -112,26 +110,39 @@ public String crearPublicacion(@ModelAttribute("publiDto") PublicacionDto publiD
             if (resultado.hasErrors()) {
                 return "publicaciones/EditarPublicacion";
             }
-            if (!publicDto.getArchivoFoto().isEmpty()) {
-                //se borra la imagen vieja
-                String cargarRuta = "public/imagenes/";
-                Path viejaRutaFoto = Paths.get(cargarRuta + publicacion.getArchivoFoto());
-                try {
-                    Files.delete(viejaRutaFoto);
-                } catch (Exception e) {
-                    System.out.println("Excepcion: " + e.getMessage());
-                }
-                //guardar la imagen nueva
+            if (publicDto.getArchivoFoto() != null && !publicDto.getArchivoFoto().isEmpty()) {
                 MultipartFile foto = publicDto.getArchivoFoto();
                 String nombreFoto = foto.getOriginalFilename();
-                try (InputStream inputStream = foto.getInputStream()) {
-                    Files.copy(inputStream, Paths.get(cargarRuta + nombreFoto),
-                            StandardCopyOption.REPLACE_EXISTING);
-                } catch (Exception e) {
-                }
                 publicacion.setArchivoFoto(nombreFoto);
+
+                // Guardar la imagen en la ruta
+                Path rutaFoto = Paths.get("public/imagenes/" + nombreFoto);
+                try (InputStream inputStream = foto.getInputStream()) {
+                    Files.copy(inputStream, rutaFoto, StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    System.out.println("Error al guardar la imagen: " + e.getMessage());
+                }
             }
 
+//            if (!publicDto.getArchivoFoto().isEmpty()) {
+//                //se borra la imagen vieja
+//                String cargarRuta = "public/imagenes/";
+//                Path viejaRutaFoto = Paths.get(cargarRuta + publicacion.getArchivoFoto());
+//                try {
+//                    Files.delete(viejaRutaFoto);
+//                } catch (Exception e) {
+//                    System.out.println("Excepcion: " + e.getMessage());
+//                }
+//                //guardar la imagen nueva
+//                MultipartFile foto = publicDto.getArchivoFoto();
+//                String nombreFoto = foto.getOriginalFilename();
+//                try (InputStream inputStream = foto.getInputStream()) {
+//                    Files.copy(inputStream, Paths.get(cargarRuta + nombreFoto),
+//                            StandardCopyOption.REPLACE_EXISTING);
+//                } catch (Exception e) {
+//                }
+//                publicacion.setArchivoFoto(nombreFoto);
+//            }
             //actualizamos lo demas
             publicacion.setNombreMascota(publicDto.getNombre_mascota());
             publicacion.setTelefono(publicDto.getTelefono());
