@@ -153,9 +153,7 @@
         <div class="register-section">
             <div class="form-container">
                 <h2 class="form-title">Registro</h2>
-                <div th:if="${param.success}" class="success-message show">
-                    Usuario registrado con éxito
-                </div>
+                
                 <form th:action="@{/register}" method="post">
                     <div class="form-group">
                         <label for="username">Usuario</label>
@@ -167,6 +165,9 @@
                     </div>
                     <button type="submit">Registrarse</button>
                 </form>
+                <div th:if="${param.success}" style="color: green;">
+                    Usuario registrado con éxito
+                </div>
                 <div class="login-link">
                     ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>
                 </div>

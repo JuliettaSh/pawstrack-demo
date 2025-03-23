@@ -1,6 +1,9 @@
 {
     "elements": {},
     "attributes": {
+        "th:text": {
+            "context": "span"
+        },
         "th:object": {
             "context": "form"
         },
@@ -13,6 +16,7 @@
         "th:field": {
             "context": "textarea"
         },
+        "th:each": {},
         "th:value": {
             "context": "input"
         }

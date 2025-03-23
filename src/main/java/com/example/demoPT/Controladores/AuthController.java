@@ -71,6 +71,6 @@ public class AuthController {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         userRepository.save(usuario);
         //mostramos el registro
-        return "register";
+        return "redirect:/register?success";
     }
 }
