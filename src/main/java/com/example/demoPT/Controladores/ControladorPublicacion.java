@@ -65,10 +65,23 @@ public class ControladorPublicacion {
         publicacion.setUsuario(usuario); // Asignar usuario autenticado para hacer la relacion
 
         // Guardar la foto 
-        if (!archivoFoto.isEmpty()) {
-            String nombreArchivo = archivoFoto.getOriginalFilename();
-            publicacion.setArchivoFoto(nombreArchivo);
+        if (publiDto.getArchivoFoto() != null && !publiDto.getArchivoFoto().isEmpty()) {
+            MultipartFile foto = publiDto.getArchivoFoto();
+            String nombreFoto = foto.getOriginalFilename();
+            publicacion.setArchivoFoto(nombreFoto);
+
+            // Guardar la imagen en la ruta
+            Path rutaFoto = Paths.get("public/imagenes/" + nombreFoto);
+            try (InputStream inputStream = foto.getInputStream()) {
+                Files.copy(inputStream, rutaFoto, StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception e) {
+                System.out.println("Error al guardar la imagen: " + e.getMessage());
+            }
         }
+//        if (!archivoFoto.isEmpty()) {
+//            String nombreArchivo = archivoFoto.getOriginalFilename();
+//            publicacion.setArchivoFoto(nombreArchivo);
+//        }
 
         // Guardar en la base de datos
         repo.save(publicacion);
