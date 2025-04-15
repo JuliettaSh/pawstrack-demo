@@ -8,6 +8,6 @@ public class ControladoraSeguimiento {
 
     @GetMapping("/seguimiento")
     public String seguimiento() {
-        return "seguimiento"; // Nombre del archivo HTML sin extensión
+        return "Seguimiento"; // Nombre del archivo HTML sin extensión
     }
 }
