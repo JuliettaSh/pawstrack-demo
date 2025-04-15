@@ -4,6 +4,9 @@
         "th:text": {
             "context": "span"
         },
+        "th:if": {
+            "context": "div"
+        },
         "th:object": {
             "context": "form"
         },

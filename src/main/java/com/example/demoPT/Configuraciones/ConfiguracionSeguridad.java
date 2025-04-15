@@ -31,10 +31,11 @@ public class ConfiguracionSeguridad {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/login", "/register", "/css/**", "/js/**", "/perfil/**").permitAll()
                 .requestMatchers("/publicaciones/crear").authenticated() // Requiere autenticación antes de entrar a ese apartado
                 .requestMatchers("/publicaciones/editar").authenticated() // Requiere autenticación
                 .requestMatchers("/publicaciones/borrar").authenticated() // Requiere autenticación
+                .requestMatchers("/seguimiento").authenticated() // Requiere autenticación
                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

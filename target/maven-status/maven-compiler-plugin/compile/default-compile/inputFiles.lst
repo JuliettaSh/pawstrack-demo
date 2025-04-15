@@ -1,8 +1,11 @@
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Configuraciones\ConfiguracionSeguridad.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Controladores\AuthController.java
+D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Controladores\ControladoraSeguimiento.java
+D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Controladores\ControladorPerfil.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Controladores\ControladorPublicacion.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Controladores\ControladorUsuario.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\DemoPtApplication.java
+D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Modelo\CambioContrasenaDTO.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Modelo\ImplUsuarioDetails.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Modelo\Publicacion.java
 D:\NetBeans\demoPT\demoPT\src\main\java\com\example\demoPT\Modelo\PublicacionDto.java

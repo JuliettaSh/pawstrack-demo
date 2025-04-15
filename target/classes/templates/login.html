@@ -159,6 +159,10 @@
                     <div th:if="${param.logout}" style="color: green;">
                         Has cerrado sesión correctamente.
                     </div>
+                    <!-- Mensaje de cuenta eliminada -->
+                    <div th:if="${param.cuentaEliminada}" style="color: green;">
+                        Tu cuenta ha sido eliminada correctamente.
+                    </div>
                     <div class="register-link">
                         ¿No tienes una cuenta? <a th:href="@{/register}">Regístrate aquí</a>
                     </div>

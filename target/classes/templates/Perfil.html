@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-space {
+            width: 40px;
+            height: 40px;
+            background-color: #5a4d7c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-name {
+            font-size: 1.5em;
+            color: #5a4d7c;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #5a4d7c;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Main content container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Profile container */
+        .profile-container {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 900px;
+            min-height: 600px;
+            margin-top: 20px;
+        }
+
+        .profile-sidebar {
+            background-color: #5a4d7c;
+            width: 250px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .profile-buttons {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 15px;
+        }
+
+        .profile-button {
+            background-color: #ffffff;
+            color: #5a4d7c;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .profile-button:hover {
+            background-color: #f6f6f6;
+        }
+
+        .profile-content {
+            flex-grow: 1;
+            padding: 30px;
+            color: #5a4d7c;
+            position: relative;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #9e9e9e;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #9e9e9e;
+            border-radius: 4px;
+        }
+
+        .update-button {
+            background-color: #5a4d7c;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Notification styles */
+        .notification-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .notification {
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            color: white;
+            animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
+        }
+        
+        .success {
+            background-color: #4CAF50;
+        }
+        
+        .error {
+            background-color: #F44336;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .profile-sidebar {
+                width: 100%;
+                border-radius: 10px 10px 0 0;
+            }
+            
+            .nav-links {
+                display: none;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a th:href="@{/home}" class="brand">
+                <div class="logo-space">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                    <circle cx="9" cy="9" r="1.5"/>
+                    <circle cx="15" cy="9" r="1.5"/>
+                    <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+                    </svg>
+                </div>
+                <span class="brand-name">PawsTrack</span>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a th:href="@{/home}" class="nav-link">Home</a>
+                <a href="/seguimiento" class="nav-link">Ver Seguimiento</a>
+                <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
+                <a href="/perfil" class="nav-link">Perfil</a>
+                <a href="/logout">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <img src="https://img.freepik.com/vector-gratis/circulo-azul-usuario-blanco_78370-4707.jpg" alt="Foto de perfil" class="profile-photo">
+                <div class="profile-buttons">
+                    <button class="profile-button" data-section="cuenta">Cuenta</button>
+                    <button class="profile-button" data-section="cambiar-contrasena">Cambiar Contraseña</button>
+                    <button class="profile-button" data-section="borrar-cuenta">Borrar Cuenta</button>
+                </div>
+            </div>
+            <div class="profile-content">
+                <!-- Notification container -->
+                <div class="notification-container">
+                    <div th:if="${success}" class="notification success" th:text="${success}"></div>
+                    <div th:if="${error}" class="notification error" th:text="${error}"></div>
+                </div>
+                
+                <section id="cuenta" class="content-section active">
+                    <h2>Información de Cuenta</h2>
+                    <form th:action="@{/perfil/actualizar}" method="post">
+                        <div class="form-group">
+                            <label>Nombre de Usuario</label>
+                            <input type="text" name="username" th:value="${usuario.username}" required>
+                        </div>
+                        <button type="submit" class="update-button">Actualizar Cuenta</button>
+                    </form>
+                </section>
+
+                <section id="cambiar-contrasena" class="content-section">
+                    <h2>Cambiar Contraseña</h2>
+                    <form th:action="@{/perfil/cambiar-contrasena}" method="post">
+                        <div class="form-group">
+                            <label>Contraseña Actual</label>
+                            <input type="password" name="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nueva Contraseña</label>
+                            <input type="password" name="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Nueva Contraseña</label>
+                            <input type="password" name="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="update-button">Cambiar Contraseña</button>
+                    </form>
+                </section>
+
+                <section id="borrar-cuenta" class="content-section">
+                    <h2>Borrar Cuenta</h2>
+                    <p>Si deseas eliminar tu cuenta, por favor confirma a continuación:</p>
+                    <form th:action="@{/perfil/borrar}" method="post" id="deleteForm">
+                        <button type="submit" class="update-button" style="background-color: #ff0000;">Confirmar Eliminación de Cuenta</button>
+                    </form>
+                    <p style="color: #9e9e9e; font-size: 0.8em;">Nota: Esta acción no se puede deshacer</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+            document.querySelector('.menu-button').classList.toggle('menu-open');
+        }
+
+        // Profile section switching
+        document.querySelectorAll('.profile-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionId = button.getAttribute('data-section');
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Confirm account deletion
+        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            if (!confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+                e.preventDefault();
+            }
+        });
+
+        // Close menu when clicking on a link (mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navLinks = document.getElementById('navLinks');
+                navLinks.classList.remove('active');
+                document.querySelector('.menu-button').classList.remove('menu-open');
+            });
+        });
+
+        // Close menu when resizing to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                const navLinks = document.getElementById('navLinks');
+                navLinks.classList.remove('active');
+                document.querySelector('.menu-button').classList.remove('menu-open');
+            }
+        });
+    </script>
+</body>
+</html>

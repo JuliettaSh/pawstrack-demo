@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seguimiento - PawsTrack</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f6f6f6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Navbar styles (copiado de tu original) */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-space {
+            width: 40px;
+            height: 40px;
+            background-color: #5a4d7c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-name {
+            font-size: 1.5em;
+            color: #5a4d7c;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #5a4d7c;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .construction-message {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 20px;
+        }
+        
+        .construction-message h1 {
+            color: #5a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        .construction-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar idéntico al original -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a th:href="@{/home}" class="brand">
+                <div class="logo-space">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                    <circle cx="9" cy="9" r="1.5"/>
+                    <circle cx="15" cy="9" r="1.5"/>
+                    <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+                    </svg>
+                </div>
+                <span class="brand-name">PawsTrack</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a th:href="@{/home}" class="nav-link">Home</a>
+                <a href="/seguimiento" class="nav-link">Ver Seguimiento</a>
+                <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
+                <a href="/perfil" class="nav-link">Perfil</a>
+                <a href="/logout">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="construction-message">
+            <div class="construction-icon">🚧</div>
+            <h1>Página en proceso</h1>
+            <p>Estamos trabajando en esta sección. ¡Vuelve pronto!</p>
+        </div>
+    </div>
+
+    <script>
+        // Funcionalidad del menú móvil (igual que en tu original)
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+            document.querySelector('.menu-button').classList.toggle('menu-open');
+        }
+    </script>
+</body>
+</html>

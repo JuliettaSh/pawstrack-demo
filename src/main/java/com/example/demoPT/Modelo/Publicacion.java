@@ -20,7 +20,7 @@ public class Publicacion implements Serializable{
     private String descripcion;
     private String archivoFoto;
     
-    @ManyToOne//relacion con el usuario
+    @ManyToOne(fetch = FetchType.LAZY)//relacion con el usuario
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
     
