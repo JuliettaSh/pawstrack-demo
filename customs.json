@@ -1,14 +1,27 @@
 {
     "elements": {},
     "attributes": {
+        "th:classappend": {
+            "context": "span"
+        },
         "th:text": {
             "context": "span"
         },
+        "th:object": {
+            "context": "form"
+        },
+        "th:action": {
+            "context": "form"
+        },
+        "th:field": {
+            "context": "textarea"
+        },
+        "th:each": {},
         "th:if": {
             "context": "div"
         },
-        "th:object": {
-            "context": "form"
+        "th:unless": {
+            "context": "div"
         },
         "th:src": {
             "context": "img"
@@ -16,12 +29,14 @@
         "th:href": {
             "context": "a"
         },
-        "th:field": {
-            "context": "textarea"
+        "th:content": {
+            "context": "meta"
         },
-        "th:each": {},
         "th:value": {
             "context": "input"
+        },
+        "th:selected": {
+            "context": "option"
         }
     }
 }

@@ -337,7 +337,7 @@
                     </div>
                 </form>
             </div>
--->
+            -->
             <div class="cards-grid">
                 <div class="card" th:each="publicacion : ${publicaciones}">
                     <div class="card-image">
@@ -353,16 +353,28 @@
                             <span class="card-value" th:text="${publicacion.nombreMascota}"></span>
                         </div>
                         <div class="card-field">
-                            <span class="card-label">Dirección:</span>
-                            <span class="card-value" th:text="${publicacion.direccion}"></span>
-                        </div>
-                        <div class="card-field">
                             <span class="card-label">Teléfono:</span>
                             <span class="card-value" th:text="${publicacion.telefono}"></span>
                         </div>
                         <div class="card-field">
                             <span class="card-label">Descripción:</span>
                             <span class="card-value" th:text="${publicacion.descripcion}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Especie:</span>
+                            <span class="card-value" th:text="${#strings.capitalize(#strings.toLowerCase(publicacion.especie))}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Edad:</span>
+                            <span class="card-value" th:text="${#strings.capitalize(#strings.toLowerCase(publicacion.edad))}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Tamaño:</span>
+                            <span class="card-value" th:text="${#strings.capitalize(#strings.toLowerCase(publicacion.tamanio))}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Departamento:</span>
+                            <span class="card-value" th:text="${publicacion.departamento}"></span>
                         </div>
                     </div>
                     <div class="card-actions">

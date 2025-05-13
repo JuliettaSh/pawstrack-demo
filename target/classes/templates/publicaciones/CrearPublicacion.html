@@ -133,12 +133,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="direccion">Dirección</label>
-                            <input type="text" id="direccion" name="direccion" th:field="${publiDto.direccion}" required>
-                        </div>
-                    </div>
+
                     <div class="col-6">
                         <div class="form-group">
                             <label for="archivo_foto">Foto</label>
@@ -152,6 +147,63 @@
                         <div class="form-group">
                             <label for="descripcion">Descripción</label>
                             <textarea id="descripcion" name="descripcion" th:field="${publiDto.descripcion}" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="especie">Especie</label>
+                            <select id="especie" name="especie" th:field="${publiDto.especie}" required>
+                                <option value="">Seleccione una especie</option>
+                                <option value="PERRO">Perro</option>
+                                <option value="GATO">Gato</option>
+                                <option value="OTRO">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="edad">Edad</label>
+                            <select id="edad" name="edad" th:field="${publiDto.edad}" required>
+                                <option value="">Seleccione edad</option>
+                                <option value="CACHORRO">Cachorro</option>
+                                <option value="JOVEN">Joven</option>
+                                <option value="ADULTO">Adulto</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="tamanio">Tamaño</label>
+                            <select id="tamanio" name="tamanio" th:field="${publiDto.tamanio}" required>
+                                <option value="">Seleccione tamaño</option>
+                                <option value="PEQUENIO">Pequeño</option>
+                                <option value="MEDIANO">Mediano</option>
+                                <option value="GRANDE">Grande</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="departamento">Departamento (Mendoza)</label>
+                            <select id="departamento" name="departamento" th:field="${publiDto.departamento}" required>
+                                <option value="">Seleccione departamento</option>
+                                <option value="Capital">Capital</option>
+                                <option value="Godoy Cruz">Godoy Cruz</option>
+                                <option value="Guaymallén">Guaymallén</option>
+                                <option value="Las Heras">Las Heras</option>
+                                <option value="Luján de Cuyo">Luján de Cuyo</option>
+                                <option value="Maipú">Maipú</option>
+                                <option value="San Martín">San Martín</option>
+                                <option value="San Rafael">San Rafael</option>
+                                <option value="Tunuyán">Tunuyán</option>
+                                <option value="Tupungato">Tupungato</option>
+                                <!-- Agrega más departamentos según necesites -->
+                            </select>
                         </div>
                     </div>
                 </div>

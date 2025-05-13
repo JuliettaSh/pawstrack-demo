@@ -132,6 +132,18 @@
                     padding: 40px 20px;
                 }
             }
+
+            .mfa-login {
+                margin-top: 30px;
+                padding: 20px;
+                background: #f9f9f9;
+                border-top: 1px solid #ddd;
+            }
+            #mfaCode {
+                width: 150px;
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
         </style>
     </head>
     <body>
@@ -148,8 +160,25 @@
                             <label for="password">Contraseña</label>
                             <input type="password" id="password" name="password" required/>
                         </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="remember-me" id="remember-me"/>
+                            <label for="remember-me">Recordar sesión</label>
+                        </div>
+
                         <button type="submit">Ingresar</button>
                     </form>
+                    <div th:if="${param.mfaNeeded}" class="mfa-login">
+                        <h3>Verificación en Dos Pasos</h3>
+                        <form th:action="@{/login/mfa}" method="post">
+                            <input type="hidden" name="username" th:value="${param.username}">
+                            <div class="form-group">
+                                <label for="mfaCode">Código de Google Authenticator</label>
+                                <input type="number" id="mfaCode" name="code" required 
+                                       placeholder="6 dígitos" pattern="\d{6}">
+                            </div>
+                            <button type="submit">Verificar</button>
+                        </form>
+                    </div>
                     <!-- Mensaje de error -->
                     <div th:if="${param.error}" style="color: red;">
                         Usuario o contraseña incorrectos.

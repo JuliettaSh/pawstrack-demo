@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verificación MFA - PawsTrack</title>
+    <style>
+        .mfa-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .mfa-code-input {
+            font-size: 1.2rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            padding: 0.5rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mfa-container">
+            <h2>Verificación en Dos Pasos</h2>
+            <p>Por favor ingresa el código de tu aplicación autenticadora</p>
+            
+            <form th:action="@{/login/mfa-verify}" method="post">
+                <input type="hidden" name="username" th:value="${username}">
+                
+                <div class="form-group">
+                    <input type="number" class="mfa-code-input" 
+                           name="code" placeholder="123456" required
+                           pattern="[0-9]{6}" title="6 dígitos numéricos">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Verificar</button>
+            </form>
+            
+            <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+        </div>
+    </div>
+</body>
+</html>

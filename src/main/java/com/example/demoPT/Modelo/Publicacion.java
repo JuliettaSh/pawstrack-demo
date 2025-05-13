@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class Publicacion implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id_publicacion;
+    private Long id_publicacion;
     
     @Basic
     private String nombreMascota;
-    private String direccion;
+    //private String direccion;
     private String telefono;
     
     @Column(columnDefinition = "TEXT")
@@ -24,16 +24,36 @@ public class Publicacion implements Serializable{
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
     
+    
+    @Enumerated(EnumType.STRING)
+    private Especie especie;
+    
+    @Enumerated(EnumType.STRING)
+    private Edad edad;
+    
+    @Enumerated(EnumType.STRING)
+    private Tamanio tamanio;
+    
+    private String departamento; // Para los departamentos de Mendoza
+    
+    // Enums para los tipos
+    public enum Especie { PERRO, GATO, OTRO }
+    public enum Edad { CACHORRO, JOVEN, ADULTO }
+    public enum Tamanio { PEQUENIO, MEDIANO, GRANDE }
+    
+    
     public Publicacion() {
     }
 
-    public int getId_publicacion() {
+    public Long getId_publicacion() {
         return id_publicacion;
     }
 
-    public void setId_publicacion(int id_publicacion) {
+    public void setId_publicacion(Long id_publicacion) {
         this.id_publicacion = id_publicacion;
     }
+
+
 
     public String getNombreMascota() {
         return nombreMascota;
@@ -49,14 +69,6 @@ public class Publicacion implements Serializable{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     public String getTelefono() {
@@ -83,5 +95,37 @@ public class Publicacion implements Serializable{
         this.usuario = usuario;
     }
 
+    public Especie getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(Especie especie) {
+        this.especie = especie;
+    }
+
+    public Edad getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Edad edad) {
+        this.edad = edad;
+    }
+
+    public Tamanio getTamanio() {
+        return tamanio;
+    }
+
+    public void setTamanio(Tamanio tamanio) {
+        this.tamanio = tamanio;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+    
     
 }

@@ -3,30 +3,28 @@ package com.example.demoPT.Modelo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
+import java.util.Collections;
 
 public class ImplUsuarioDetails implements UserDetails {
+    private final Usuario usuario;
 
-    private final String username;
-    private final String password;
-
-    public ImplUsuarioDetails(Usuario usuario) { // Constructor 
-        this.username = usuario.getUsername();
-        this.password = usuario.getPassword();
+    public ImplUsuarioDetails(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return usuario.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return usuario.getUsername();
     }
 
     @Override
@@ -46,6 +44,10 @@ public class ImplUsuarioDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return usuario.isEnabled();
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 }

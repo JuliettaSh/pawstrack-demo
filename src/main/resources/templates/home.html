@@ -3,6 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <title>PawsTrack - Inicio</title>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
         <style>
@@ -206,35 +208,12 @@
             .btn.edit:hover {
                 background-color: #218838;
             }
-
-            .cards-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .card {
-                background-color: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-            }
-
             .card-image {
                 width: 100%;
                 height: 200px;
                 overflow: hidden;
                 position: relative;
             }
-
-            .card-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-                padding-top: 20px;
-            }
-
             .card-content {
                 padding: 20px;
             }
@@ -262,11 +241,76 @@
                 text-align: center;
                 border-top: 1px solid #eee;
             }
+            /* Modificado - Inicio */
+            .cards-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 25px;
+                padding: 20px 0;
+            }
+
+            .pet-card {
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                transition: all 0.3s ease;
+                transform: translateY(0);
+                width: calc(33.33% - 17px); /* 3 tarjetas por fila con espacio para gaps */
+                margin-bottom: 20px;
+            }
+
+            /* Asegurarse de que el div que está dentro de cards-grid no estorbe el diseño */
+            .cards-grid > div {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 25px;
+                width: 100%;
+            }
+
+            .no-results {
+                width: 100%;
+                text-align: center;
+                padding: 20px;
+                color: #666;
+            }
+            /* Modificado - Fin */
+
+            .pet-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            }
+
+            .card-image {
+                height: 220px;
+                overflow: hidden;
+            }
+
+            .card-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .pet-card:hover .card-image img {
+                transform: scale(1.05);
+            }
+
+            @media (max-width: 992px) {
+                .pet-card {
+                    width: calc(50% - 13px); /* 2 tarjetas por fila en tabletas */
+                }
+            }
 
             @media (max-width: 768px) {
                 .cards-grid {
-                    grid-template-columns: 1fr;
-                    padding: 10px;
+                    gap: 15px;
+                }
+
+                .pet-card {
+                    width: 100%; /* 1 tarjeta por fila en móviles */
+                    margin-bottom: 15px;
                 }
 
                 .card-image {
@@ -416,6 +460,9 @@
                 border-radius: 5px;
                 cursor: pointer;
                 transition: background-color 0.3s;
+                display: inline-block;
+                text-decoration: none;
+                margin-top: 10px;
             }
 
             .adopt-button:hover {
@@ -480,6 +527,21 @@
                 text-align: center;
                 padding-bottom: 20px;
             }
+            .spinner {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                border: 2px solid rgba(0,0,0,0.2);
+                border-radius: 50%;
+                border-top-color: #5a4d7c;
+                animation: spin 1s ease-in-out infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
         </style>
     </head>
     <body>
@@ -507,7 +569,7 @@
 
                 <div class="nav-links" id="navLinks">
                     <a th:href="@{/home}" class="nav-link">Home</a>
-                    <a href="/seguimiento" class="nav-link">Ver Seguimiento</a>
+                    <a th:href="@{/seguimiento}" class="nav-link">Ver Seguimiento</a>
                     <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
                     <a href="/perfil" class="nav-link">Perfil</a>
                     <a href="/logout">Cerrar Sesión</a>
@@ -520,37 +582,54 @@
             <h4>Buscame!</h4>
             <!-- Sección de filtros -->
             <div class="filters-section">
-                <form class="filters-grid">
+                <form th:action="@{/home}" method="get" class="filters-grid">
                     <div class="filter-group">
                         <label for="especie">Especie</label>
                         <select id="especie" name="especie">
                             <option value="">Todas</option>
-                            <option value="perro">Perro</option>
-                            <option value="gato">Gato</option>
-                            <option value="otro">Otro</option>
+                            <option value="PERRO">Perro</option>
+                            <option value="GATO">Gato</option>
+                            <option value="OTRO">Otro</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label for="edad">Edad</label>
                         <select id="edad" name="edad">
                             <option value="">Todas</option>
-                            <option value="cachorro">Cachorro</option>
-                            <option value="joven">Joven</option>
-                            <option value="adulto">Adulto</option>
+                            <option value="CACHORRO">Cachorro</option>
+                            <option value="JOVEN">Joven</option>
+                            <option value="ADULTO">Adulto</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label for="tamanio">Tamaño</label>
                         <select id="tamanio" name="tamanio">
                             <option value="">Todos</option>
-                            <option value="pequenio">Pequeño</option>
-                            <option value="mediano">Mediano</option>
-                            <option value="grande">Grande</option>
+                            <option value="PEQUENIO">Pequeño</option>
+                            <option value="MEDIANO">Mediano</option>
+                            <option value="GRANDE">Grande</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="ubicacion">Ubicación</label>
-                        <input type="text" id="ubicacion" name="ubicacion" placeholder="Ingresa una ubicación">
+                        <label for="departamento">Departamento</label>
+                        <select id="departamento" name="departamento">
+                            <option value="">Todos</option>
+                            <option value="Capital">Capital</option>
+                            <option value="Godoy Cruz">Godoy Cruz</option>
+                            <option value="Guaymallén">Guaymallén</option>
+                            <option value="Las Heras">Las Heras</option>
+                            <option value="Luján de Cuyo">Luján de Cuyo</option>
+                            <option value="Maipú">Maipú</option>
+                            <option value="San Martín">San Martín</option>
+                            <option value="San Rafael">San Rafael</option>
+                            <option value="Tunuyán">Tunuyán</option>
+                            <option value="Tupungato">Tupungato</option>
+                            <!-- Agrega más opciones según tus departamentos -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button type="submit" class="btn">Filtrar</button>
+                        <a href="/home" class="btn secondary">Limpiar</a>
                     </div>
                 </form>
             </div>
@@ -571,32 +650,136 @@
                     <button class="carousel-button right">→</button>
                 </div>
             </div>
-
-            <!-- Grid de mascotas -->
             <!-- Grid de mascotas -->
             <div class="cards-grid">
-                <div class="card pet-card" th:each="publicacion : ${publicaciones}">
-                    <div class="card-image">
-                        <img th:src="@{'/imagenes/'+${publicacion.archivoFoto}}" alt="Mascota">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-label">Nombre</span>
-                        <span class="card-value" th:text="${publicacion.nombreMascota}"></span>
-                        <p class="card-description" th:text="${publicacion.descripcion}"></p>
+                <!-- Verifica si hay publicaciones -->
+                <div th:if="${publicaciones != null and !publicaciones.isEmpty()}">
+                    <div th:each="publicacion : ${publicaciones}" 
+                         th:object="${publicacion}" 
+                         class="card pet-card">
 
-                        <!-- Botón que redirige a WhatsApp -->
-                        <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
-                           class="adopt-button" 
-                           target="_blank">
-                            Adoptar vía WhatsApp
-                        </a>
+                        <!-- Imagen con validación -->
+                        <div class="card-image">
+                            <img th:if="*{archivoFoto != null}" 
+                                 th:src="@{'/imagenes/' + *{archivoFoto}}" 
+                                 alt="Mascota">
+                            <img th:unless="*{archivoFoto != null}" 
+                                 src="/images/default-pet.jpg" 
+                                 alt="Mascota default">
+                        </div>
+
+                        <!-- Contenido con validación -->
+                        <div class="card-content">
+                            <span class="card-label">Nombre</span>
+                            <span class="card-value" 
+                                  th:text="*{nombreMascota} ?: 'Sin nombre'"></span>
+
+                            <span class="card-label">Especie</span>
+                            <span class="card-value" 
+                                  th:text="*{especie} ?: 'No especificado'"></span>
+
+                            <span class="card-label">Edad</span>
+                            <span class="card-value" 
+                                  th:text="*{edad} ?: 'No especificado'"></span>
+
+                            <!-- Botón WhatsApp con validación -->
+                            <form th:if="${publicacion.telefono != null}"
+                                  th:action="@{/seguimiento/iniciar/{publicacionId}(publicacionId=${publicacion.id_publicacion})}"
+                                  method="post"
+                                  >
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button type="submit" class="adopt-button">
+                                    Adoptar vía WhatsApp
+                                </button>
+                            </form>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Mensaje cuando no hay publicaciones -->
+                <div th:unless="${publicaciones != null and !publicaciones.isEmpty()}" 
+                     class="no-results">
+                    No se encontraron publicaciones que coincidan con los filtros.
                 </div>
             </div>
 
         </div>
 
         <script>
+//            async function iniciarSeguimiento(event) {
+//                event.preventDefault();
+//                const boton = event.currentTarget;
+//                const publicacionId = boton.getAttribute('data-publicacion-id');
+//                const whatsappLink = boton.getAttribute('data-whatsapp-link');
+//
+//                try {
+//                    boton.innerHTML = '<span class="spinner"></span> Procesando...';
+//                    boton.disabled = true;
+//
+//                    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+//                    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+//
+//                    const response = await fetch(`/seguimiento/iniciar/${publicacionId}`, {
+//                        method: 'POST',
+//                        headers: {
+//                            'Content-Type': 'application/json',
+//                            [csrfHeader]: csrfToken
+//                        },
+//                        credentials: 'include'
+//                    });
+//
+//                    const result = await response.json();
+//
+//                    if (!response.ok) {
+//                        throw new Error(result.message || 'Error en la respuesta del servidor');
+//                    }
+//
+//                    if (result.success) {
+//                        // Abrir WhatsApp después de crear el seguimiento
+//                        window.open(result.whatsappLink || whatsappLink, '_blank');
+//
+//                        // Mostrar notificación de éxito
+//                        mostrarNotificacion('Seguimiento iniciado correctamente', 'success');
+//
+//                        // Recargar después de 1 segundo
+//                        setTimeout(() => location.reload(), 1000);
+//                    } else {
+//                        throw new Error(result.message || 'No se pudo crear el seguimiento');
+//                    }
+//                } catch (error) {
+//                    console.error('Error:', error);
+//                    mostrarNotificacion(error.message, 'error');
+//                } finally {
+//                    boton.innerHTML = 'Adoptar vía WhatsApp';
+//                    boton.disabled = false;
+//                }
+//            }
+//
+//// Función auxiliar para mostrar notificaciones (puedes implementar tu propio sistema)
+//            function mostrarNotificacion(mensaje, tipo) {
+//                // Implementación básica con alert
+//                alert(`${tipo.toUpperCase()}: ${mensaje}`);
+//
+//                /* 
+//                 // Implementación más avanzada con toast (ejemplo con Bootstrap)
+//                 const toast = document.createElement('div');
+//                 toast.className = `toast align-items-center text-white bg-${tipo === 'error' ? 'danger' : 'success'}`;
+//                 toast.innerHTML = `
+//                 <div class="d-flex">
+//                 <div class="toast-body">${mensaje}</div>
+//                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+//                 </div>
+//                 `;
+//                 document.body.appendChild(toast);
+//                 new bootstrap.Toast(toast).show();
+//                 setTimeout(() => toast.remove(), 5000);
+//                 */
+//            }
+//// Función auxiliar para mostrar notificaciones
+//            function mostrarNotificacion(mensaje, tipo) {
+//                // Implementa según tu sistema de notificaciones
+//                alert(tipo.toUpperCase() + ': ' + mensaje); // Ejemplo básico
+//            }
             // Funciones del menú heredadas
             function toggleMenu() {
                 const navLinks = document.getElementById('navLinks');
@@ -662,7 +845,7 @@
                 if (event.target === document.getElementById('adoptModal')) {
                     closeModal();
                 }
-            }
+            };
         </script>
     </body>
 </html>

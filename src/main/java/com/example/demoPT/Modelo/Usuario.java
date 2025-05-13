@@ -24,6 +24,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Publicacion> publicaciones = new ArrayList<>();
 
+    private boolean enabled = false;  // Para verificación por email si es necesario
+    private boolean mfaEnabled = false;  // Si el usuario activó MFA
+    private String mfaSecret;  // Almacena la clave secreta para Google Authenticator
+
     public Usuario() {
     }
 
@@ -74,5 +78,30 @@ public class Usuario {
     public void setPublicaciones(List<Publicacion> publicaciones) {
         this.publicaciones = publicaciones;
     }
-    
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isMfaEnabled() {
+        return mfaEnabled;
+    }
+
+    public void setMfaEnabled(boolean mfaEnabled) {
+        this.mfaEnabled = mfaEnabled;
+    }
+
+    public String getMfaSecret() {
+        return mfaSecret;
+    }
+
+    public void setMfaSecret(String mfaSecret) {
+        this.mfaSecret = mfaSecret;
+    }
+
+   
 }
