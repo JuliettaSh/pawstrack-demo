@@ -651,7 +651,76 @@
                 </div>
             </div>
             <!-- Grid de mascotas -->
-            <div class="cards-grid">
+<!--            <div class="cards-grid">
+                 Verifica si hay publicaciones 
+                <div th:if="${publicaciones != null and !publicaciones.isEmpty()}">
+                    <div th:each="publicacion : ${publicaciones}" 
+                         th:object="${publicacion}" 
+                         class="card pet-card">
+
+                         Imagen con validación 
+                        <div class="card-image">
+                            <img th:if="*{archivoFoto != null}" 
+                                 th:src="@{'/imagenes/' + *{archivoFoto}}" 
+                                 alt="Mascota">
+                            <img th:unless="*{archivoFoto != null}" 
+                                 src="/images/default-pet.jpg" 
+                                 alt="Mascota default">
+                        </div>
+
+                         Contenido con validación 
+                        <div class="card-content">
+                            <span class="card-label">Nombre</span>
+                            <span class="card-value" 
+                                  th:text="*{nombreMascota} ?: 'Sin nombre'"></span>
+
+                            <span class="card-label">Especie</span>
+                            <span class="card-value" 
+                                  th:text="*{especie} ?: 'No especificado'"></span>
+
+                            <span class="card-label">Edad</span>
+                            <span class="card-value" 
+                                  th:text="*{edad} ?: 'No especificado'"></span>
+
+                             Botón WhatsApp con validación 
+                                                        <form th:action="@{/seguimiento/iniciar/{id}(id=${publicacion.id_publicacion})}" method="post">
+                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                            <button type="submit" class="btn-primary">Adoptar</button>
+                                                        </form>
+                            <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
+                               class="adopt-button" 
+                               target="_blank">
+                                Adoptar vía WhatsApp
+                            </a>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                 Mensaje cuando no hay publicaciones 
+                <div th:unless="${publicaciones != null and !publicaciones.isEmpty()}" 
+                     class="no-results">
+                    No se encontraron publicaciones que coincidan con los filtros.
+                </div>
+            </div>-->
+<div class="cards-grid">
+                <div class="card pet-card" th:each="publicacion : ${publicaciones}">
+                    <div class="card-image">
+                        <img th:src="@{'/imagenes/'+${publicacion.archivoFoto}}" alt="Mascota">
+                    </div>
+                    <div class="card-content">
+                        <span class="card-label">Nombre</span>
+                        <span class="card-value" th:text="${publicacion.nombreMascota}"></span>
+                        <p class="card-description" th:text="${publicacion.descripcion}"></p>
+
+                        <!-- Botón que redirige a WhatsApp -->
+                        <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
+                           class="adopt-button" 
+                           target="_blank">
+                            Adoptar vía WhatsApp
+                        </a>
                 <!-- Verifica si hay publicaciones -->
                 <div th:if="${publicaciones != null and !publicaciones.isEmpty()}">
                     <div th:each="publicacion : ${publicaciones}" 
@@ -683,18 +752,15 @@
                                   th:text="*{edad} ?: 'No especificado'"></span>
 
                             <!-- Botón WhatsApp con validación -->
-                            <!--                            <form th:action="@{/seguimiento/iniciar/{id}(id=${publicacion.id_publicacion})}" method="post">
-                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                                            <button type="submit" class="btn-primary">Adoptar</button>
-                                                        </form>-->
-                            <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
-                               class="adopt-button" 
-                               target="_blank">
-                                Adoptar vía WhatsApp
-                            </a>
-
-
-
+                            <form th:if="${publicacion.telefono != null}"
+                                  th:action="@{/seguimiento/iniciar/{publicacionId}(publicacionId=${publicacion.id_publicacion})}"
+                                  method="post"
+                                  >
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button type="submit" class="adopt-button">
+                                    Adoptar vía WhatsApp
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -705,6 +771,8 @@
                     No se encontraron publicaciones que coincidan con los filtros.
                 </div>
             </div>
+
+        </div>
 
         </div>
 
