@@ -104,8 +104,8 @@ public class ControladorSeguimiento {
                 .orElseThrow(() -> new AccessDeniedException("Acceso denegado"));
 
         model.addAttribute("seguimientoEditar", seguimiento);
-        model.addAttribute("estadosPosibles", Arrays.asList("Pendiente", "En proceso", "Completado"));
-        model.addAttribute("section", "editar-seguimiento"); // Agregar esto
+        model.addAttribute("estadosPosibles", Arrays.asList("Pendiente", "En proceso", "Adoptado"));
+        model.addAttribute("section", "editar-seguimiento");
         return "seguimiento/index";
     }
 
@@ -118,68 +118,53 @@ public class ControladorSeguimiento {
     }
 
     @PostMapping("/iniciar/{publicacionId}")
-    public String iniciarSeguimiento(
-            @PathVariable Long publicacionId,
-            @AuthenticationPrincipal Usuario adoptante,
-            RedirectAttributes redirectAttributes) {
+public String iniciarSeguimiento(@PathVariable Long publicacionId,
+                                @AuthenticationPrincipal Usuario adoptante,
+                                RedirectAttributes redirectAttributes) {
+    try {
+        Publicacion publicacion = publicacionService.findById(publicacionId)
+            .orElseThrow(() -> new ResourceNotFoundException("Publicación no encontrada"));
 
-        logger.info("Iniciando seguimiento para la publicación ID: {}", publicacionId);
-        logger.info("Adoptante: {}", adoptante != null ? adoptante.getUsername() : "null");
-
-        try {
-            Publicacion publicacion = publicacionService.findById(publicacionId)
-                    .orElseThrow(() -> {
-                        logger.error("Publicación no encontrada con ID: {}", publicacionId);
-                        return new ResourceNotFoundException("Publicación no encontrada");
-                    });
-
-            logger.info("Publicación encontrada: {}", publicacion.getNombreMascota());
-            if (seguimientoService.existeSeguimiento(publicacion, adoptante)) {
-                redirectAttributes.addFlashAttribute("error", "Ya existe un seguimiento para esta publicación");
-                logger.warn("Ya existe un seguimiento para esta publicación");
-                return "redirect:/home";
-            }
-
-            Seguimiento seguimiento = new Seguimiento();
-            seguimiento.setPublicacion(publicacion);
-            seguimiento.setAdoptante(adoptante);
-            seguimiento.setResponsable(publicacion.getUsuario());
-            seguimiento.setEstado("Pendiente");
-
-            seguimientoService.guardarSeguimiento(seguimiento);
-
-            logger.info("Seguimiento guardado");
-
-            String whatsappLink = construirEnlaceWhatsApp(publicacion);
-            logger.info("Enlace de WhatsApp: {}", whatsappLink);
-            // Redirige directamente a WhatsApp
-            return "redirect:" + whatsappLink;
-
-        } catch (Exception e) {
-            logger.error("Error al crear seguimiento: ", e);
-            redirectAttributes.addFlashAttribute("error", "Error al crear seguimiento: " + e.getMessage());
+        if (seguimientoService.existeSeguimiento(publicacion, adoptante)) {
+            redirectAttributes.addFlashAttribute("error", "Ya existe un seguimiento para esta publicación");
             return "redirect:/home";
         }
 
+        Seguimiento seguimiento = new Seguimiento();
+        seguimiento.setPublicacion(publicacion);  // <-- Aquí debe asignarse
+        seguimiento.setAdoptante(adoptante);      // <-- Aquí debe asignarse
+        seguimiento.setResponsable(publicacion.getUsuario());
+        seguimiento.setEstado("Pendiente");
+
+        seguimientoService.guardarSeguimiento(seguimiento);
+
+        // Redirigir a WhatsApp u otra acción
+        String whatsappLink = construirEnlaceWhatsApp(publicacion);
+        return "redirect:" + whatsappLink;
+
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Error al crear seguimiento: " + e.getMessage());
+        return "redirect:/home";
     }
+}
 
     private String construirEnlaceWhatsApp(Publicacion publicacion) {
-    String nombreMascota = publicacion.getNombreMascota() != null
-            ? publicacion.getNombreMascota() : "tu mascota";
+        String nombreMascota = publicacion.getNombreMascota() != null
+                ? publicacion.getNombreMascota() : "tu mascota";
 
-    String telefono = "54" + publicacion.getTelefono();
-    String mensaje = "Hola! Vi tu publicación de " + nombreMascota + " en PawsTrack y me interesa adoptarla. ¿Podríamos conversar al respecto?";
-    String mensajeCodificado = URLEncoder.encode(mensaje, StandardCharsets.UTF_8);
+        String telefono = "54" + publicacion.getTelefono();
+        String mensaje = "Hola! Vi tu publicación de " + nombreMascota + " en PawsTrack y me interesa adoptarla. ¿Podríamos conversar al respecto?";
+        String mensajeCodificado = URLEncoder.encode(mensaje, StandardCharsets.UTF_8);
 
-    String whatsappLink = "https://wa.me/" + telefono + "?text=" + mensajeCodificado;
+        String whatsappLink = "https://wa.me/" + telefono + "?text=" + mensajeCodificado;
 
-    logger.info("Teléfono: {}", telefono);
-    logger.info("Mensaje: {}", mensaje);
-    logger.info("Mensaje Codificado: {}", mensajeCodificado);
-    logger.info("Enlace de WhatsApp: {}", whatsappLink);
+        logger.info("Teléfono: {}", telefono);
+        logger.info("Mensaje: {}", mensaje);
+        logger.info("Mensaje Codificado: {}", mensajeCodificado);
+        logger.info("Enlace de WhatsApp: {}", whatsappLink);
 
-    return whatsappLink;
-}
+        return whatsappLink;
+    }
 
     @PostMapping("/actualizar/{id}")
     public String actualizarSeguimiento(
@@ -195,7 +180,6 @@ public class ControladorSeguimiento {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al actualizar: " + e.getMessage());
         }
-
         return "redirect:/seguimiento";
     }
 }

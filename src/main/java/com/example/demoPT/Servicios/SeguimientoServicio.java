@@ -54,18 +54,17 @@ public class SeguimientoServicio {
         return todos;
     }
 
-    public Seguimiento actualizarSeguimiento(Long id, String estado, String observaciones, Usuario usuario) throws AccessDeniedException {
+    public void actualizarSeguimiento(Long id, String estado, String observaciones, Usuario usuario) throws AccessDeniedException {
         Seguimiento seguimiento = seguimientoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Seguimiento no encontrado con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Seguimiento no encontrado"));
 
         if (!seguimiento.getResponsable().getId().equals(usuario.getId())) {
-            throw new AccessDeniedException("No tienes permiso para editar este seguimiento");
+            throw new AccessDeniedException("No tienes permiso para modificar este seguimiento");
         }
 
         seguimiento.setEstado(estado);
         seguimiento.setObservaciones(observaciones);
-
-        return seguimientoRepository.save(seguimiento);
+        seguimientoRepository.save(seguimiento);
     }
 
     public Optional<Seguimiento> buscarPorIdYUsuario(Long id, Usuario usuario) {

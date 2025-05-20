@@ -683,15 +683,18 @@
                                   th:text="*{edad} ?: 'No especificado'"></span>
 
                             <!-- Botón WhatsApp con validación -->
-                            <form th:if="${publicacion.telefono != null}"
-                                  th:action="@{/seguimiento/iniciar/{publicacionId}(publicacionId=${publicacion.id_publicacion})}"
-                                  method="post"
-                                  >
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                                <button type="submit" class="adopt-button">
-                                    Adoptar vía WhatsApp
-                                </button>
-                            </form>
+                            <!--                            <form th:action="@{/seguimiento/iniciar/{id}(id=${publicacion.id_publicacion})}" method="post">
+                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                                            <button type="submit" class="btn-primary">Adoptar</button>
+                                                        </form>-->
+                            <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
+                               class="adopt-button" 
+                               target="_blank">
+                                Adoptar vía WhatsApp
+                            </a>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -706,80 +709,7 @@
         </div>
 
         <script>
-//            async function iniciarSeguimiento(event) {
-//                event.preventDefault();
-//                const boton = event.currentTarget;
-//                const publicacionId = boton.getAttribute('data-publicacion-id');
-//                const whatsappLink = boton.getAttribute('data-whatsapp-link');
-//
-//                try {
-//                    boton.innerHTML = '<span class="spinner"></span> Procesando...';
-//                    boton.disabled = true;
-//
-//                    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-//                    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-//
-//                    const response = await fetch(`/seguimiento/iniciar/${publicacionId}`, {
-//                        method: 'POST',
-//                        headers: {
-//                            'Content-Type': 'application/json',
-//                            [csrfHeader]: csrfToken
-//                        },
-//                        credentials: 'include'
-//                    });
-//
-//                    const result = await response.json();
-//
-//                    if (!response.ok) {
-//                        throw new Error(result.message || 'Error en la respuesta del servidor');
-//                    }
-//
-//                    if (result.success) {
-//                        // Abrir WhatsApp después de crear el seguimiento
-//                        window.open(result.whatsappLink || whatsappLink, '_blank');
-//
-//                        // Mostrar notificación de éxito
-//                        mostrarNotificacion('Seguimiento iniciado correctamente', 'success');
-//
-//                        // Recargar después de 1 segundo
-//                        setTimeout(() => location.reload(), 1000);
-//                    } else {
-//                        throw new Error(result.message || 'No se pudo crear el seguimiento');
-//                    }
-//                } catch (error) {
-//                    console.error('Error:', error);
-//                    mostrarNotificacion(error.message, 'error');
-//                } finally {
-//                    boton.innerHTML = 'Adoptar vía WhatsApp';
-//                    boton.disabled = false;
-//                }
-//            }
-//
-//// Función auxiliar para mostrar notificaciones (puedes implementar tu propio sistema)
-//            function mostrarNotificacion(mensaje, tipo) {
-//                // Implementación básica con alert
-//                alert(`${tipo.toUpperCase()}: ${mensaje}`);
-//
-//                /* 
-//                 // Implementación más avanzada con toast (ejemplo con Bootstrap)
-//                 const toast = document.createElement('div');
-//                 toast.className = `toast align-items-center text-white bg-${tipo === 'error' ? 'danger' : 'success'}`;
-//                 toast.innerHTML = `
-//                 <div class="d-flex">
-//                 <div class="toast-body">${mensaje}</div>
-//                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-//                 </div>
-//                 `;
-//                 document.body.appendChild(toast);
-//                 new bootstrap.Toast(toast).show();
-//                 setTimeout(() => toast.remove(), 5000);
-//                 */
-//            }
-//// Función auxiliar para mostrar notificaciones
-//            function mostrarNotificacion(mensaje, tipo) {
-//                // Implementa según tu sistema de notificaciones
-//                alert(tipo.toUpperCase() + ': ' + mensaje); // Ejemplo básico
-//            }
+
             // Funciones del menú heredadas
             function toggleMenu() {
                 const navLinks = document.getElementById('navLinks');

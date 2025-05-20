@@ -357,7 +357,7 @@
             <div class="seguimiento-tabs">
                 <a th:href="@{/seguimiento(section='mis-seguimientos')}" class="seguimiento-tab" th:classappend="${section == null or section == 'mis-seguimientos'} ? ' active'">Mis Seguimientos</a>
                 <a th:href="@{/seguimiento(section='todos-seguimientos')}" class="seguimiento-tab" th:classappend="${section == 'todos-seguimientos'} ? ' active'">Todos los Seguimientos</a>
-<!--                <a th:href="@{/seguimiento(section='nuevo-seguimiento')}" class="seguimiento-tab" th:classappend="${section == 'nuevo-seguimiento'} ? ' active'">Nuevo Seguimiento</a>-->
+                <!--                <a th:href="@{/seguimiento(section='nuevo-seguimiento')}" class="seguimiento-tab" th:classappend="${section == 'nuevo-seguimiento'} ? ' active'">Nuevo Seguimiento</a>-->
             </div>
 
             <div class="seguimiento-content">
@@ -415,22 +415,6 @@
                         </div>
                     </div>
                 </div>
-
-<!--                 Sección: Nuevo Seguimiento 
-                <div id="nuevo-seguimiento" class="seguimiento-section" th:classappend="${section == 'nuevo-seguimiento'} ? ' active'">
-                    <form th:action="@{/seguimiento/nuevo}" method="post">
-                        <div class="form-group">
-                            <label>Publicación</label>
-                            <select name="publicacionId" required>
-                                <option value="">Seleccione una publicación</option>
-                                <option th:each="pub : ${misPublicaciones}"
-                                        th:value="${pub.id_publicacion}"
-                                        th:text="${pub.nombreMascota} + ' (' + ${pub.especie} + ')'">
-                                </option>
-                            </select>
-                        </div>
-                    </form>
-                </div>-->
 
                 <!-- Sección: Editar Seguimiento (solo se muestra cuando hay un seguimiento para editar) -->
                 <div id="editar-seguimiento" class="seguimiento-section" th:classappend="${section == 'editar-seguimiento'} ? ' active'" th:if="${seguimientoEditar != null}">
