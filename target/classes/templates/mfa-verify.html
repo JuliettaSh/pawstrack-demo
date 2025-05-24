@@ -2,43 +2,156 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Verificación MFA - PawsTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #5a4d7c;
+            --primary-light: #9c7ca4;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f9f9f9;
+            --white: #ffffff;
+            --border: rgba(0,0,0,0.1);
+            --error: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
         .mfa-container {
             max-width: 400px;
-            margin: 2rem auto;
-            padding: 2rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-        .mfa-code-input {
-            font-size: 1.2rem;
-            letter-spacing: 0.5rem;
+            margin: 40px auto;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             text-align: center;
-            padding: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin: 25px 0;
+        }
+
+        .mfa-code-input {
             width: 100%;
+            max-width: 220px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-align: center;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .mfa-code-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(90, 77, 124, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(90, 77, 124, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        @media (max-width: 480px) {
+            .mfa-container {
+                padding: 30px 20px;
+                margin: 20px auto;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .mfa-code-input {
+                max-width: 180px;
+                font-size: 1rem;
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="mfa-container">
-            <h2>Verificación en Dos Pasos</h2>
-            <p>Por favor ingresa el código de tu aplicación autenticadora</p>
+    <div class="mfa-container">
+        <h2>Verificación en Dos Pasos</h2>
+        <p>Ingresa el código de 6 dígitos de tu aplicación autenticadora</p>
+        
+        <form th:action="@{/login/mfa-verify}" method="post">
+            <input type="hidden" name="username" th:value="${username}">
             
-            <form th:action="@{/login/mfa-verify}" method="post">
-                <input type="hidden" name="username" th:value="${username}">
-                
-                <div class="form-group">
-                    <input type="number" class="mfa-code-input" 
-                           name="code" placeholder="123456" required
-                           pattern="[0-9]{6}" title="6 dígitos numéricos">
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Verificar</button>
-            </form>
+            <div class="form-group">
+                <input type="number" class="mfa-code-input" 
+                       name="code" placeholder="123456" required
+                       pattern="[0-9]{6}" title="6 dígitos numéricos"
+                       inputmode="numeric">
+            </div>
             
-            <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
-        </div>
+            <button type="submit" class="btn btn-primary">Verificar</button>
+        </form>
+        
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     </div>
 </body>
 </html>

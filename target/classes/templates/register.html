@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Registro - PawsTrack</title>
@@ -184,12 +184,12 @@
                     <div th:if="${param.registered}" class="alert alert-info">
                         Registro exitoso. Por favor completa la configuración de seguridad.
                     </div>
-                    <!--                    <div th:if="${param.mfaRequired}" class="mfa-notice">
+                                        <div th:if="${param.mfaRequired}" class="mfa-notice">
                                             <p>Configuración de seguridad adicional requerida:</p>
                                             <a th:href="@{/register/mfa(username=${param.username})}" class="btn btn-primary">
                                                 Configurar Autenticación en Dos Pasos
                                             </a>
-                                        </div>-->
+                                        </div>
                     <div th:if="${param.success}" style="color: green;">
                         Usuario registrado con éxito
                     </div>
@@ -204,4 +204,278 @@
             </div>
         </div>
     </body>
+</html>-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro - PawsTrack</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a4d7c;
+            --primary-light: #9c7ca4;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f9f9f9;
+            --white: #ffffff;
+            --border: rgba(0,0,0,0.1);
+            --success: #28a745;
+            --info: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .register-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .brand-section {
+            flex: 1;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .paw-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .brand-name {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-container {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(90, 77, 124, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .alert-info {
+            background-color: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+            border: 1px solid rgba(23, 162, 184, 0.2);
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+
+        .mfa-notice {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .btn-mfa {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-mfa:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .brand-section {
+                padding: 40px 20px;
+            }
+            
+            .form-container {
+                padding: 30px;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-name {
+                font-size: 2rem;
+            }
+            
+            .paw-icon {
+                font-size: 60px;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="register-section">
+            <div class="form-container">
+                <h2 class="form-title">Registro</h2>
+                
+                <div th:if="${param.registered}" class="alert alert-info">
+                    Registro exitoso. Por favor completa la configuración de seguridad.
+                </div>
+                
+                <div th:if="${param.success}" class="alert alert-success">
+                    Usuario registrado con éxito
+                </div>
+
+                <form th:action="@{/register}" method="post">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <button type="submit">Registrarse</button>
+                </form>
+                
+                <div th:if="${param.mfaRequired}" class="mfa-notice">
+                    <p>Configuración de seguridad adicional requerida:</p>
+                    <a th:href="@{/register/mfa(username=${param.username})}" class="btn-mfa">
+                        Configurar Autenticación en Dos Pasos
+                    </a>
+                </div>
+                
+                <div class="login-link">
+                    ¿Ya tienes una cuenta? <a th:href="@{/login}">Inicia sesión aquí</a>
+                </div>
+            </div>
+        </div>
+        <div class="brand-section">
+            <div class="paw-icon">🐾</div>
+            <div class="brand-name">PawsTrack</div>
+        </div>
+    </div>
+</body>
 </html>

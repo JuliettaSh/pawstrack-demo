@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -315,7 +315,7 @@
             <div class="header-actions">
                 <a href="/publicaciones/crear" class="btn">Crear Publicación</a>
             </div>
-            <!-- 
+             
             <div class="search-section">
                 <form th:action="@{/publicaciones/buscar}" method="GET" style="display: flex; gap: 15px; width: 100%; align-items: center;">
                     <div class="search-container">
@@ -337,7 +337,7 @@
                     </div>
                 </form>
             </div>
-            -->
+            
             <div class="cards-grid">
                 <div class="card" th:each="publicacion : ${publicaciones}">
                     <div class="card-image">
@@ -412,4 +412,498 @@
             });
         </script>   
     </body>
+</html>-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Publicaciones - PawsTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a4d7c;
+            --primary-light: #9c7ca4;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f9f9f9;
+            --white: #ffffff;
+            --border: rgba(0,0,0,0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background-color: var(--bg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header estilo Basic Agency */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--white);
+            z-index: 1000;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .logo-icon svg {
+            fill: var(--white);
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-left: 30px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 16px;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: var(--primary);
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 7px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 14px;
+        }
+
+        .menu-open .hamburger span:nth-child(1) {
+            top: 7px;
+            transform: rotate(45deg);
+        }
+
+        .menu-open .hamburger span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-open .hamburger span:nth-child(3) {
+            top: 7px;
+            transform: rotate(-45deg);
+        }
+
+        /* Main content */
+        .main {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 5%;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        /* Botones */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(90, 77, 124, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+        }
+
+        .btn-edit {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        /* Cards grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-field {
+            margin-bottom: 15px;
+        }
+
+        .card-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .card-value {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card-actions {
+            padding: 15px 20px 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-actions .btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 5%;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav.active {
+                transform: translateY(0);
+            }
+
+            .nav-link {
+                margin: 15px 0;
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a th:href="@{/home}" class="logo">
+                <div class="logo-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                        <circle cx="9" cy="9" r="1.5"/>
+                        <circle cx="15" cy="9" r="1.5"/>
+                        <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">PawsTrack</span>
+            </a>
+
+            <nav class="nav" id="nav">
+                <a th:href="@{/home}" class="nav-link">Home</a>
+                <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
+                <a href="/perfil" class="nav-link">Perfil</a>
+                <a href="/logout" class="nav-link">Cerrar Sesión</a>
+            </nav>
+
+            <button class="menu-toggle" id="menuToggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <h1 class="section-title">Mis Publicaciones</h1>
+            
+            <div class="text-center" style="margin-bottom: 40px;">
+                <a href="/publicaciones/crear" class="btn btn-primary">Crear Publicación</a>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card" th:each="publicacion : ${publicaciones}">
+                    <div class="card-image">
+                        <img th:src="@{'/imagenes/'+${publicacion.archivoFoto}}" 
+                             alt="Foto de la mascota"
+                             onerror="this.src='/images/default-pet.jpg'">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-field">
+                            <span class="card-label">ID</span>
+                            <span class="card-value" th:text="${publicacion.id_publicacion}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Nombre Mascota</span>
+                            <span class="card-value" th:text="${publicacion.nombreMascota}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Teléfono</span>
+                            <span class="card-value" th:text="${publicacion.telefono}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Descripción</span>
+                            <span class="card-value" th:text="${publicacion.descripcion}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Especie</span>
+                            <span class="card-value" th:text="${#strings.capitalize(#strings.toLowerCase(publicacion.especie))}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Edad</span>
+                            <span class="card-value" th:text="${#strings.capitalize(#strings.toLowerCase(publicacion.edad))}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Tamaño</span>
+                            <span class="card-value" th:text="${#strings.capitalize(#strings.toLowerCase(publicacion.tamanio))}"></span>
+                        </div>
+                        <div class="card-field">
+                            <span class="card-label">Departamento</span>
+                            <span class="card-value" th:text="${publicacion.departamento}"></span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a class="btn btn-edit" 
+                           th:href="@{/publicaciones/editar(id=${publicacion.id_publicacion})}">Editar</a>
+                        <a class="btn btn-delete" 
+                           th:href="@{/publicaciones/borrar(id=${publicacion.id_publicacion})}"
+                           onclick="return confirm('¿Seguro que desea eliminar esta publicación?')">Borrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('menu-open');
+            nav.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('menu-open');
+                nav.classList.remove('active');
+            });
+        });
+
+        // Close menu on resize if window is large enough
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                menuToggle.classList.remove('menu-open');
+                nav.classList.remove('active');
+            }
+        });
+    </script>
+</body>
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -639,7 +639,7 @@
         <div class="container">
             <h4>Buscame!</h4>
 
-            <!-- Sección de filtros -->
+             Sección de filtros 
             <div class="filters-section">
                 <form th:action="@{/home}" method="get" class="filters-grid">
                     <div class="filter-group">
@@ -710,25 +710,25 @@
             </div>
 
             <h4>¡Adoptanos!</h4>
-            <!-- Grid de mascotas -->
+             Grid de mascotas 
             <div class="cards-grid">
                 
-                <!-- Verifica si hay publicaciones -->
+                 Verifica si hay publicaciones 
                 <div th:if="${not #lists.isEmpty(publicaciones)}" th:each="publicacion : ${publicaciones}" class="pet-card">
-                    <!-- Muestra el estado si existe -->
+                     Muestra el estado si existe 
                     <div th:if="${publicacion.estado != null}">
                         <div th:if="${publicacion.estado.toString()} == 'EN_STOCK'" class="estado-label verde">En stock</div>
                         <div th:if="${publicacion.estado.toString()} == 'EN_PROCESO'" class="estado-label amarillo">En proceso</div>
                         <div th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="estado-label rojo">Adoptado</div>
                     </div>
 
-                    <!-- Imagen con validación -->
+                     Imagen con validación 
                     <div class="card-image">
                         <img th:if="${publicacion.archivoFoto != null}" th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota">
                         <img th:unless="${publicacion.archivoFoto != null}" src="/images/default-pet.jpg" alt="Mascota default">
                     </div>
 
-                    <!-- Contenido con validación -->
+                     Contenido con validación 
                     <div class="card-content">
                         <div class="card-field">
                             <span class="card-label">Nombre</span>
@@ -750,14 +750,14 @@
                             <p class="card-description" th:text="${publicacion.descripcion} ?: 'Sin descripción'"></p>
                         </div>
 
-                        <!-- Botón WhatsApp con validación -->
+                         Botón WhatsApp con validación 
                         <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" class="adopt-button" target="_blank">
                             Adoptar vía WhatsApp
                         </a>
                     </div>
                 </div>
 
-                <!-- Mensaje cuando no hay publicaciones -->
+                 Mensaje cuando no hay publicaciones 
                 <div th:unless="${not #lists.isEmpty(publicaciones)}" class="no-results">
                     No se encontraron publicaciones que coincidan con los filtros.
                 </div>
@@ -817,4 +817,810 @@
     </body>
 </html>
 
+-->
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <title>PawsTrack - Inicio</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #5a4d7c;
+                --primary-light: #9c7ca4;
+                --text: #333;
+                --text-light: #666;
+                --bg: #f9f9f9;
+                --white: #ffffff;
+                --border: rgba(0,0,0,0.1);
+                --success: #28a745;
+                --warning: #ffc107;
+                --danger: #dc3545;
+            }
 
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                color: var(--text);
+                background-color: var(--bg);
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            /* Header estilo Basic Agency */
+            .header {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                background-color: var(--white);
+                z-index: 1000;
+                padding: 20px 5%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .header-container {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                background-color: var(--primary);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+            }
+
+            .logo-icon svg {
+                fill: var(--white);
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: var(--primary);
+                letter-spacing: -0.5px;
+            }
+
+            .nav {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-link {
+                color: var(--text);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                margin-left: 30px;
+                position: relative;
+                transition: color 0.3s ease;
+            }
+
+            .nav-link:hover {
+                color: var(--primary);
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: var(--primary);
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+            }
+
+            .hamburger {
+                width: 24px;
+                height: 16px;
+                position: relative;
+            }
+
+            .hamburger span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: var(--primary);
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .hamburger span:nth-child(1) {
+                top: 0;
+            }
+
+            .hamburger span:nth-child(2) {
+                top: 7px;
+            }
+
+            .hamburger span:nth-child(3) {
+                top: 14px;
+            }
+
+            .menu-open .hamburger span:nth-child(1) {
+                top: 7px;
+                transform: rotate(45deg);
+            }
+
+            .menu-open .hamburger span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-open .hamburger span:nth-child(3) {
+                top: 7px;
+                transform: rotate(-45deg);
+            }
+
+            /* Main content */
+            .main {
+                padding-top: 80px;
+                min-height: 100vh;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 5%;
+            }
+
+            .section {
+                padding: 40px 0; /* Reducir el padding */
+                position: relative;
+            }
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: 600;
+                color: var(--primary);
+                margin-bottom: 40px;
+                text-align: center;
+                letter-spacing: -1px;
+            }
+
+            /* Filters section */
+            .filters {
+                background: var(--white);
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+                margin-bottom: 0;
+            }
+
+            .filters-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .filter-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .filter-label {
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: var(--primary);
+                margin-bottom: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .filter-select {
+                padding: 12px 15px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-size: 0.95rem;
+                background-color: var(--white);
+                transition: all 0.3s ease;
+            }
+
+            .filter-select:focus {
+                outline: none;
+                border-color: var(--primary-light);
+                box-shadow: 0 0 0 2px rgba(90, 77, 124, 0.1);
+            }
+
+            /* Estilo base para todos los botones */
+            .btn {
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border: none;
+                text-align: center;
+                display: inline-block;
+                text-decoration: none;
+                letter-spacing: 0.3px;
+                margin: 0 5px;
+            }
+
+            /* Botón primario (Filtrar) */
+            .btn-primary {
+                background-color: var(--primary); /* #5a4d7c */
+                color: white;
+                box-shadow: 0 2px 6px rgba(90, 77, 124, 0.25);
+            }
+
+            .btn-primary:hover {
+                background-color: var(--primary-light); /* #9c7ca4 */
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+            }
+
+            .btn-primary:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 4px rgba(90, 77, 124, 0.2);
+            }
+
+            /* Botón secundario (Limpiar) */
+            .btn-secondary {
+                background-color: white;
+                color: var(--primary);
+                border: 1px solid var(--primary);
+                box-shadow: 0 1px 3px rgba(90, 77, 124, 0.1);
+            }
+
+            .btn-secondary:hover {
+                background-color: #f8f5ff;
+                color: var(--primary);
+                border-color: var(--primary);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 5px rgba(90, 77, 124, 0.15);
+            }
+
+            .btn-secondary:active {
+                transform: translateY(0);
+                box-shadow: 0 1px 3px rgba(90, 77, 124, 0.1);
+            }
+
+            /* Asegurar que el enlace se comporte como botón */
+            a.btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Espaciado entre botones */
+            .filter-group .btn + .btn {
+                margin-left: 12px;
+            }
+
+            /* Carousel */
+            .carousel {
+                position: relative;
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                overflow: hidden;
+                height: 500px; /* Altura fija para el carrusel */
+            }
+
+            .carousel-inner {
+                display: flex;
+                transition: transform 0.5s ease;
+                height: 100%;
+            }
+
+            .carousel-item {
+                min-width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .carousel-image {
+                width: auto;
+                height: 100%;
+                max-height: 100%;
+                object-fit: contain; /* Cambiado de 'cover' a 'contain' */
+                border-radius: 8px;
+            }
+
+            .carousel-caption {
+                padding: 20px;
+                text-align: center;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.9);
+                margin-top: -60px; /* Ajuste para que el texto no tape la imagen */
+            }
+
+            .carousel-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: var(--primary);
+            }
+
+            .carousel-description {
+                color: var(--text-light);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .carousel-control {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 40px;
+                height: 40px;
+                background-color: var(--white);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                border: none;
+                z-index: 10;
+                opacity: 0.8;
+                transition: opacity 0.3s ease;
+            }
+
+            .carousel-control:hover {
+                opacity: 1;
+            }
+
+            .carousel-control.prev {
+                left: 20px;
+            }
+
+            .carousel-control.next {
+                right: 20px;
+            }
+
+            /* Pets grid */
+            .pets-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 30px;
+                margin-top: 40px;
+            }
+
+            .pet-card {
+                background: var(--white);
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+                transition: all 0.3s ease;
+            }
+
+            .pet-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+
+            .pet-status {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                border-radius: 4px;
+                display: inline-block;
+                margin: 15px;
+            }
+            .pets-section {
+                margin-top: 0;
+                padding-top: 0;
+            }
+            body, h1, h2, h3, h4, p {
+                margin: 0;
+                padding: 0;
+            }
+            .status-available {
+                background-color: var(--success);
+                color: white;
+            }
+
+            .status-pending {
+                background-color: var(--warning);
+                color: black;
+            }
+
+            .status-adopted {
+                background-color: var(--danger);
+                color: white;
+            }
+
+            .pet-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .pet-info {
+                padding: 20px;
+            }
+
+            .pet-name {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 5px;
+                color: var(--primary);
+            }
+
+            .pet-meta {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .pet-meta-item {
+                display: flex;
+                align-items: center;
+                font-size: 0.85rem;
+                color: var(--text-light);
+            }
+
+            .pet-meta-item svg {
+                margin-right: 5px;
+                width: 14px;
+                height: 14px;
+                fill: var(--primary-light);
+            }
+
+            .pet-description {
+                color: var(--text-light);
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+                line-height: 1.5;
+            }
+
+            .pet-actions {
+                padding: 0 20px 20px;
+            }
+
+            .adopt-btn {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                background-color: var(--primary);
+                color: white;
+                text-align: center;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background-color 0.3s ease;
+            }
+
+            .adopt-btn:hover {
+                background-color: var(--primary-light);
+            }
+
+            .no-results {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 60px 0;
+                color: var(--text-light);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .menu-toggle {
+                    display: block;
+                }
+
+                .nav {
+                    position: fixed;
+                    top: 80px;
+                    left: 0;
+                    width: 100%;
+                    background-color: var(--white);
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 20px 5%;
+                    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+                    transform: translateY(-150%);
+                    transition: transform 0.3s ease;
+                    z-index: 999;
+                }
+
+                .nav.active {
+                    transform: translateY(0);
+                }
+
+                .nav-link {
+                    margin: 15px 0;
+                    font-size: 1rem;
+                }
+
+                .section {
+                    padding: 60px 0;
+                }
+
+                .section-title {
+                    font-size: 2rem;
+                }
+
+                .carousel-image {
+                    height: 300px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .filters-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .section {
+                    padding: 40px 0;
+                }
+
+                .section-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 30px;
+                }
+
+                .carousel-image {
+                    height: 250px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <div class="header-container">
+                <a th:href="@{/home}" class="logo">
+                    <div class="logo-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                        <circle cx="9" cy="9" r="1.5"/>
+                        <circle cx="15" cy="9" r="1.5"/>
+                        <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">PawsTrack</span>
+                </a>
+
+                <nav class="nav" id="nav">
+                    <a th:href="@{/home}" class="nav-link">Home</a>
+                    <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
+                    <a href="/perfil" class="nav-link">Perfil</a>
+                    <a href="/logout" class="nav-link">Cerrar Sesión</a>
+                </nav>
+
+                <button class="menu-toggle" id="menuToggle">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <section class="section">
+                    <h1 class="section-title">Encuentra a tu compañero perfecto</h1>
+
+                    <div class="filters">
+                        <form th:action="@{/home}" method="get" class="filters-grid">
+                            <div class="filter-group">
+                                <label for="especie" class="filter-label">Especie</label>
+                                <select id="especie" name="especie" class="filter-select">
+                                    <option value="">Todas</option>
+                                    <option value="PERRO">Perro</option>
+                                    <option value="GATO">Gato</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="edad" class="filter-label">Edad</label>
+                                <select id="edad" name="edad" class="filter-select">
+                                    <option value="">Todas</option>
+                                    <option value="CACHORRO">Cachorro</option>
+                                    <option value="JOVEN">Joven</option>
+                                    <option value="ADULTO">Adulto</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="tamanio" class="filter-label">Tamaño</label>
+                                <select id="tamanio" name="tamanio" class="filter-select">
+                                    <option value="">Todos</option>
+                                    <option value="PEQUENIO">Pequeño</option>
+                                    <option value="MEDIANO">Mediano</option>
+                                    <option value="GRANDE">Grande</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="departamento" class="filter-label">Departamento</label>
+                                <select id="departamento" name="departamento" class="filter-select">
+                                    <option value="">Todos</option>
+                                    <option value="Capital">Capital</option>
+                                    <option value="Godoy Cruz">Godoy Cruz</option>
+                                    <option value="Guaymallén">Guaymallén</option>
+                                    <option value="Las Heras">Las Heras</option>
+                                    <option value="Luján de Cuyo">Luján de Cuyo</option>
+                                    <option value="Maipú">Maipú</option>
+                                    <option value="San Martín">San Martín</option>
+                                    <option value="San Rafael">San Rafael</option>
+                                    <option value="Tunuyán">Tunuyán</option>
+                                    <option value="Tupungato">Tupungato</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                                <a href="/home" class="btn btn-secondary">Limpiar</a>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Los que más esperan un hogar</h2>
+
+                    <div class="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" th:each="publicacion, iterStat : ${publicaciones}" th:data-index="${iterStat.index}">
+                                <img th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" 
+                                     alt="Mascota" 
+                                     class="carousel-image"
+                                     onerror="this.src='/images/default-pet.jpg'">
+                                <div class="carousel-caption">
+                                    <h3 class="carousel-title" th:text="${publicacion.nombreMascota}"></h3>
+                                    <p class="carousel-description" th:text="${publicacion.descripcion}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control prev">‹</button>
+                        <button class="carousel-control next">›</button>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Mascotas disponibles</h2>
+
+                    <div class="pets-grid">
+                        <div th:if="${not #lists.isEmpty(publicaciones)}" th:each="publicacion : ${publicaciones}" class="pet-card">
+                            <div th:if="${publicacion.estado != null}">
+                                <span th:if="${publicacion.estado.toString()} == 'EN_STOCK'" class="pet-status status-available">Disponible</span>
+                                <span th:if="${publicacion.estado.toString()} == 'EN_PROCESO'" class="pet-status status-pending">En proceso</span>
+                                <span th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="pet-status status-adopted">Adoptado</span>
+                            </div>
+
+                            <img th:if="${publicacion.archivoFoto != null}" th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota" class="pet-image">
+                            <img th:unless="${publicacion.archivoFoto != null}" src="/images/default-pet.jpg" alt="Mascota default" class="pet-image">
+
+                            <div class="pet-info">
+                                <h3 class="pet-name" th:text="${publicacion.nombreMascota} ?: 'Sin nombre'"></h3>
+
+                                <div class="pet-meta">
+                                    <span class="pet-meta-item">
+                                        <svg viewBox="0 0 24 24">
+                                        <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z"/>
+                                        <path d="M12.5,7H11v6l5.2,3.2l0.8-1.3l-4.5-2.7V7z"/>
+                                        </svg>
+                                        <span th:text="${publicacion.edad} ?: 'No especificado'"></span>
+                                    </span>
+                                    <span class="pet-meta-item">
+                                        <svg viewBox="0 0 24 24">
+                                        <path d="M12,2C8.13,2,5,5.13,5,9c0,5.25,7,13,7,13s7-7.75,7-13C19,5.13,15.87,2,12,2z M12,11.5c-1.38,0-2.5-1.12-2.5-2.5 s1.12-2.5,2.5-2.5s2.5,1.12,2.5,2.5S13.38,11.5,12,11.5z"/>
+                                        </svg>
+                                        <span th:text="${publicacion.departamento} ?: 'No especificado'"></span>
+                                    </span>
+                                </div>
+
+                                <p class="pet-description" th:text="${publicacion.descripcion} ?: 'Sin descripción'"></p>
+                            </div>
+
+                            <div class="pet-actions">
+                                <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
+                                   class="adopt-btn" 
+                                   target="_blank">
+                                    Contactar para adoptar
+                                </a>
+                            </div>
+                        </div>
+
+                        <div th:unless="${not #lists.isEmpty(publicaciones)}" class="no-results">
+                            No se encontraron mascotas que coincidan con los filtros.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <script>
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const nav = document.getElementById('nav');
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('menu-open');
+                nav.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('menu-open');
+                    nav.classList.remove('active');
+                });
+            });
+
+            // Carousel functionality
+            document.addEventListener('DOMContentLoaded', () => {
+                const carousel = document.querySelector('.carousel-inner');
+                const items = document.querySelectorAll('.carousel-item');
+                const prevBtn = document.querySelector('.prev');
+                const nextBtn = document.querySelector('.next');
+                let currentIndex = 0;
+                const itemWidth = 100;
+                const totalItems = items.length;
+
+                function updateCarousel() {
+                    carousel.style.transform = `translateX(-${currentIndex * itemWidth}%)`;
+                }
+
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % totalItems;
+                    updateCarousel();
+                }
+
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                    updateCarousel();
+                }
+
+                nextBtn.addEventListener('click', nextSlide);
+                prevBtn.addEventListener('click', prevSlide);
+
+                // Auto-advance every 5 seconds
+                setInterval(nextSlide, 5000);
+            });
+
+            // Close menu on resize if window is large enough
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    menuToggle.classList.remove('menu-open');
+                    nav.classList.remove('active');
+                }
+            });
+        </script>
+    </body>
+</html>

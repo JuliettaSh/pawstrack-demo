@@ -2,110 +2,198 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Perfil de Usuario</title>
-    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario - PawsTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f6f6f6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        /* Navbar styles */
-        .navbar {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 15px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: 100%;
+        :root {
+            --primary: #5a4d7c;
+            --primary-light: #9c7ca4;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f9f9f9;
+            --white: #ffffff;
+            --border: rgba(0,0,0,0.1);
+            --success: #28a745;
+            --error: #dc3545;
+            --warning: #ffc107;
         }
 
-        .nav-content {
-            max-width: 1200px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--white);
+            z-index: 1000;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-container {
+            width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .brand {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
             text-decoration: none;
         }
 
-        .logo-space {
-            width: 40px;
-            height: 40px;
-            background-color: #5a4d7c;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-right: 12px;
         }
 
-        .brand-name {
-            font-size: 1.5em;
-            color: #5a4d7c;
-            font-weight: bold;
-            margin: 0;
+        .logo-icon svg {
+            fill: var(--white);
         }
 
-        .nav-links {
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
             display: flex;
-            gap: 20px;
             align-items: center;
         }
 
         .nav-link {
-            color: #5a4d7c;
+            color: var(--text);
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-left: 30px;
+            position: relative;
+            transition: color 0.3s ease;
         }
 
         .nav-link:hover {
-            background-color: #f0f0f0;
+            color: var(--primary);
         }
 
-        /* Main content container */
-        .main-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
-            margin-top: 20px;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
         }
 
-        /* Profile container */
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 16px;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: var(--primary);
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 7px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 14px;
+        }
+
+        .menu-open .hamburger span:nth-child(1) {
+            top: 7px;
+            transform: rotate(45deg);
+        }
+
+        .menu-open .hamburger span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-open .hamburger span:nth-child(3) {
+            top: 7px;
+            transform: rotate(-45deg);
+        }
+
+        /* Main Content */
+        .main {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
         .profile-container {
-            display: flex;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 900px;
-            min-height: 600px;
-            margin-top: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 0;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
         }
 
         .profile-sidebar {
-            background-color: #5a4d7c;
-            width: 250px;
+            background-color: var(--primary);
             padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
         }
 
         .profile-photo {
@@ -113,37 +201,43 @@
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #ffffff;
-            margin-bottom: 20px;
+            border: 4px solid var(--white);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .profile-buttons {
+        .profile-menu {
+            width: 100%;
             display: flex;
             flex-direction: column;
-            width: 100%;
-            gap: 15px;
+            gap: 10px;
         }
 
         .profile-button {
-            background-color: #ffffff;
-            color: #5a4d7c;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            background-color: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 12px 15px;
+            border-radius: 6px;
             cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .profile-button:hover {
-            background-color: #f6f6f6;
+            background-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .profile-button.active {
+            background-color: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
         }
 
         .profile-content {
-            flex-grow: 1;
-            padding: 30px;
-            color: #5a4d7c;
-            position: relative;
+            padding: 40px;
         }
 
         .content-section {
@@ -152,208 +246,357 @@
 
         .content-section.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            max-width: 500px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
-            margin-bottom: 5px;
-            color: #9e9e9e;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .form-group input {
+        .form-input {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #9e9e9e;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
-        .update-button {
-            background-color: #5a4d7c;
-            color: #ffffff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(90, 77, 124, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
         }
 
-        /* Notification styles */
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(90, 77, 124, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+        }
+
+        .btn-danger {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
         .notification-container {
             position: fixed;
-            top: 80px;
-            right: 20px;
+            top: 90px;
+            right: 30px;
             z-index: 1000;
         }
-        
+
         .notification {
             padding: 15px 20px;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
             color: white;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
         }
-        
-        .success {
-            background-color: #4CAF50;
+
+        .notification.success {
+            background-color: var(--success);
         }
-        
-        .error {
-            background-color: #F44336;
+
+        .notification.error {
+            background-color: var(--error);
         }
-        
+
         @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-        
+
         @keyframes fadeOut {
             to { opacity: 0; }
         }
 
-        /* Responsive styles */
-        @media (max-width: 768px) {
+        .warning-text {
+            color: var(--warning);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
             .profile-container {
-                flex-direction: column;
-                width: 100%;
+                grid-template-columns: 1fr;
             }
             
             .profile-sidebar {
-                width: 100%;
-                border-radius: 10px 10px 0 0;
-            }
-            
-            .nav-links {
-                display: none;
-                width: 100%;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                background-color: white;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
                 padding: 20px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                flex-direction: column;
-                align-items: stretch;
             }
             
-            .nav-links.active {
-                display: flex;
+            .profile-photo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+            
+            .profile-menu {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            
+            .profile-button {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 5%;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav.active {
+                transform: translateY(0);
+            }
+
+            .nav-link {
+                margin: 15px 0;
+                font-size: 1rem;
+            }
+            
+            .profile-content {
+                padding: 30px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-sidebar {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .profile-photo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .profile-menu {
+                justify-content: center;
+            }
+            
+            .profile-content {
+                padding: 20px;
+            }
+            
+            .notification-container {
+                top: 80px;
+                right: 15px;
             }
         }
     </style>
 </head>
-
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-content">
-            <a th:href="@{/home}" class="brand">
-                <div class="logo-space">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
-                    <circle cx="9" cy="9" r="1.5"/>
-                    <circle cx="15" cy="9" r="1.5"/>
-                    <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a th:href="@{/home}" class="logo">
+                <div class="logo-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                        <circle cx="9" cy="9" r="1.5"/>
+                        <circle cx="15" cy="9" r="1.5"/>
+                        <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
                     </svg>
                 </div>
-                <span class="brand-name">PawsTrack</span>
+                <span class="logo-text">PawsTrack</span>
             </a>
 
-            <div class="nav-links" id="navLinks">
+            <nav class="nav" id="nav">
                 <a th:href="@{/home}" class="nav-link">Home</a>
                 <a href="/seguimiento" class="nav-link">Ver Seguimiento</a>
                 <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
                 <a href="/perfil" class="nav-link">Perfil</a>
-                <a href="/logout">Cerrar Sesión</a>
-            </div>
+                <a href="/logout" class="nav-link">Cerrar Sesión</a>
+            </nav>
+
+            <button class="menu-toggle" id="menuToggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content -->
-    <div class="main-container">
+    <main class="main">
+        <!-- Notifications -->
+        <div class="notification-container">
+            <div th:if="${success}" class="notification success" th:text="${success}"></div>
+            <div th:if="${error}" class="notification error" th:text="${error}"></div>
+        </div>
+
         <div class="profile-container">
             <div class="profile-sidebar">
                 <img src="https://img.freepik.com/vector-gratis/circulo-azul-usuario-blanco_78370-4707.jpg" alt="Foto de perfil" class="profile-photo">
-                <div class="profile-buttons">
-                    <button class="profile-button" data-section="cuenta">Cuenta</button>
-                    <button class="profile-button" data-section="cambiar-contrasena">Cambiar Contraseña</button>
-                    <button class="profile-button" data-section="borrar-cuenta">Borrar Cuenta</button>
+                <div class="profile-menu">
+                    <button class="profile-button active" data-section="cuenta">Cuenta</button>
+                    <button class="profile-button" data-section="cambiar-contrasena">Contraseña</button>
+                    <button class="profile-button" data-section="borrar-cuenta">Eliminar Cuenta</button>
                 </div>
             </div>
+
             <div class="profile-content">
-                <!-- Notification container -->
-                <div class="notification-container">
-                    <div th:if="${success}" class="notification success" th:text="${success}"></div>
-                    <div th:if="${error}" class="notification error" th:text="${error}"></div>
-                </div>
-                
+                <!-- Account Section -->
                 <section id="cuenta" class="content-section active">
-                    <h2>Información de Cuenta</h2>
+                    <h2 class="section-title">Información de Cuenta</h2>
                     <form th:action="@{/perfil/actualizar}" method="post">
                         <div class="form-group">
-                            <label>Nombre de Usuario</label>
-                            <input type="text" name="username" th:value="${usuario.username}" required>
+                            <label for="username" class="form-label">Nombre de Usuario</label>
+                            <input type="text" id="username" name="username" th:value="${usuario.username}" class="form-input" required>
                         </div>
-                        <button type="submit" class="update-button">Actualizar Cuenta</button>
+                        <button type="submit" class="btn btn-primary">Actualizar Cuenta</button>
                     </form>
                 </section>
 
+                <!-- Change Password Section -->
                 <section id="cambiar-contrasena" class="content-section">
-                    <h2>Cambiar Contraseña</h2>
+                    <h2 class="section-title">Cambiar Contraseña</h2>
                     <form th:action="@{/perfil/cambiar-contrasena}" method="post">
                         <div class="form-group">
-                            <label>Contraseña Actual</label>
-                            <input type="password" name="currentPassword" required>
+                            <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                            <input type="password" id="currentPassword" name="currentPassword" class="form-input" required>
                         </div>
                         <div class="form-group">
-                            <label>Nueva Contraseña</label>
-                            <input type="password" name="newPassword" required>
+                            <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                            <input type="password" id="newPassword" name="newPassword" class="form-input" required>
+                            <p class="warning-text">La contraseña debe tener al menos 8 caracteres</p>
                         </div>
                         <div class="form-group">
-                            <label>Confirmar Nueva Contraseña</label>
-                            <input type="password" name="confirmPassword" required>
+                            <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" required>
                         </div>
-                        <button type="submit" class="update-button">Cambiar Contraseña</button>
+                        <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
                     </form>
                 </section>
 
+                <!-- Delete Account Section -->
                 <section id="borrar-cuenta" class="content-section">
-                    <h2>Borrar Cuenta</h2>
-                    <p>Si deseas eliminar tu cuenta, por favor confirma a continuación:</p>
+                    <h2 class="section-title">Eliminar Cuenta</h2>
+                    <p>Esta acción eliminará permanentemente tu cuenta y todos los datos asociados.</p>
                     <form th:action="@{/perfil/borrar}" method="post" id="deleteForm">
-                        <button type="submit" class="update-button" style="background-color: #ff0000;">Confirmar Eliminación de Cuenta</button>
+                        <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
                     </form>
-                    <p style="color: #9e9e9e; font-size: 0.8em;">Nota: Esta acción no se puede deshacer</p>
+                    <p class="warning-text">Advertencia: Esta acción no se puede deshacer</p>
                 </section>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Toggle mobile menu
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-            document.querySelector('.menu-button').classList.toggle('menu-open');
-        }
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('menu-open');
+            nav.classList.toggle('active');
+        });
 
         // Profile section switching
         document.querySelectorAll('.profile-button').forEach(button => {
             button.addEventListener('click', () => {
-                const sectionId = button.getAttribute('data-section');
+                // Remove active class from all buttons
+                document.querySelectorAll('.profile-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Hide all sections
                 document.querySelectorAll('.content-section').forEach(section => {
                     section.classList.remove('active');
                 });
+                
+                // Show selected section
+                const sectionId = button.getAttribute('data-section');
                 document.getElementById(sectionId).classList.add('active');
             });
         });
 
         // Confirm account deletion
         document.getElementById('deleteForm').addEventListener('submit', function(e) {
-            if (!confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+            if (!confirm('¿Estás seguro de que deseas eliminar tu cuenta permanentemente? Esta acción no se puede deshacer.')) {
                 e.preventDefault();
             }
         });
@@ -361,18 +604,16 @@
         // Close menu when clicking on a link (mobile)
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
-                const navLinks = document.getElementById('navLinks');
-                navLinks.classList.remove('active');
-                document.querySelector('.menu-button').classList.remove('menu-open');
+                menuToggle.classList.remove('menu-open');
+                nav.classList.remove('active');
             });
         });
 
         // Close menu when resizing to desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
-                const navLinks = document.getElementById('navLinks');
-                navLinks.classList.remove('active');
-                document.querySelector('.menu-button').classList.remove('menu-open');
+                menuToggle.classList.remove('menu-open');
+                nav.classList.remove('active');
             }
         });
     </script>
