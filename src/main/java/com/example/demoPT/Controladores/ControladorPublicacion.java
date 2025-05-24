@@ -5,7 +5,6 @@ import com.example.demoPT.Modelo.PublicacionDto;
 import com.example.demoPT.Modelo.Usuario;
 import com.example.demoPT.Repositorios.RepositorioPublicaciones;
 import com.example.demoPT.Repositorios.RepositorioUsuario;
-import com.example.demoPT.Servicios.SeguimientoServicio;
 import jakarta.validation.Valid;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -13,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,8 +35,6 @@ public class ControladorPublicacion {
     private RepositorioPublicaciones repo;
     @Autowired
     private RepositorioUsuario repoU;
-    @Autowired
-    private SeguimientoServicio seguimientoService;
 
     @GetMapping("/crear")//cuando seleccionamos el boton para crear publicaciones, se redirige a esta pantalla
     public String mostrarPaginaCrear(Model modelo) {
@@ -75,11 +73,14 @@ public class ControladorPublicacion {
             publicacion.setEdad(Publicacion.Edad.valueOf(publiDto.getEdad()));
             publicacion.setTamanio(Publicacion.Tamanio.valueOf(publiDto.getTamanio()));
             publicacion.setDepartamento(publiDto.getDepartamento());
+            publicacion.setEstado(Publicacion.Estado.valueOf(publiDto.getEstado()));
 
             // Guardar la foto 
             if (publiDto.getArchivoFoto() != null && !publiDto.getArchivoFoto().isEmpty()) {
                 MultipartFile foto = publiDto.getArchivoFoto();
-                String nombreFoto = foto.getOriginalFilename();
+                //String nombreFoto = foto.getOriginalFilename();
+                String nombreFoto = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+
                 publicacion.setArchivoFoto(nombreFoto);
 
                 // Guardar la imagen en la ruta
@@ -121,6 +122,7 @@ public class ControladorPublicacion {
             publiDto.setEdad(publicacion.getEdad().name());
             publiDto.setTamanio(publicacion.getTamanio().name());
             publiDto.setDepartamento(publicacion.getDepartamento());
+            publiDto.setEstado(publicacion.getEstado().name());
 
             modelo.addAttribute("publiDto", publiDto);
         } catch (Exception e) {
@@ -170,6 +172,7 @@ public class ControladorPublicacion {
             publicacion.setEdad(Publicacion.Edad.valueOf(publicDto.getEdad()));
             publicacion.setTamanio(Publicacion.Tamanio.valueOf(publicDto.getTamanio()));
             publicacion.setDepartamento(publicDto.getDepartamento());
+            publicacion.setEstado(Publicacion.Estado.valueOf(publicDto.getEstado()));
 
             repo.save(publicacion);
             redirectAttributes.addFlashAttribute("success", "Publicación actualizada exitosamente");
@@ -183,8 +186,6 @@ public class ControladorPublicacion {
 
     @GetMapping("/borrar")
     public String borrarPublicacion(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-        // 1. Eliminar los seguimientos asociados a la publicación
-        seguimientoService.eliminarSeguimientosPorPublicacion(id);
         try {
             Publicacion publicacion = repo.findById(id).get();
 

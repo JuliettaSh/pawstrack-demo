@@ -6,42 +6,58 @@ import java.io.Serializable;
 
 @Entity //clase publicacion con sus atributos y constructores
 @Table(name = "publicaciones")
-public class Publicacion implements Serializable{
+public class Publicacion implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_publicacion;
-    
+
     @Basic
     private String nombreMascota;
     //private String direccion;
     private String telefono;
-    
+
     @Column(columnDefinition = "TEXT")
     private String descripcion;
     private String archivoFoto;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)//relacion con el usuario
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-    
-    
+
     @Enumerated(EnumType.STRING)
     private Especie especie;
-    
+
     @Enumerated(EnumType.STRING)
     private Edad edad;
-    
+
     @Enumerated(EnumType.STRING)
     private Tamanio tamanio;
-    
+
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+
     private String departamento; // Para los departamentos de Mendoza
-    
+
     // Enums para los tipos
-    public enum Especie { PERRO, GATO, OTRO }
-    public enum Edad { CACHORRO, JOVEN, ADULTO }
-    public enum Tamanio { PEQUENIO, MEDIANO, GRANDE }
-    
-    
+    public enum Especie {
+        PERRO, GATO, OTRO
+    }
+
+    public enum Edad {
+        CACHORRO, JOVEN, ADULTO
+    }
+
+    public enum Tamanio {
+        PEQUENIO, MEDIANO, GRANDE
+    }
+
+    public enum Estado {
+        EN_STOCK,
+        EN_PROCESO,
+        ADOPTADO
+    }
+
     public Publicacion() {
     }
 
@@ -53,12 +69,18 @@ public class Publicacion implements Serializable{
         this.id_publicacion = id_publicacion;
     }
 
-
-
     public String getNombreMascota() {
         return nombreMascota;
     }
 
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+    
     public void setNombreMascota(String nombreMascota) {
         this.nombreMascota = nombreMascota;
     }
@@ -126,6 +148,5 @@ public class Publicacion implements Serializable{
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
     }
-    
-    
+
 }

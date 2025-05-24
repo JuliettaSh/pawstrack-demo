@@ -207,6 +207,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" th:field="*{estado}" required>
+                        <option value="EN_STOCK">En stock</option>
+                        <option value="EN_PROCESO">En proceso</option>
+                        <option value="ADOPTADO">Adoptado</option>
+                    </select>
+                </div>
+
                 <div class="form-actions">
                     <button type="submit" class="btn">Guardar Publicación</button>
                     <a href="/home" class="btn back-btn">Cancelar</a>

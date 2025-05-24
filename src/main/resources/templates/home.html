@@ -212,29 +212,29 @@
             /* LAYOUT DE CARDS MEJORADO */
             .cards-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 25px;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
                 padding: 20px 0;
                 width: 100%;
             }
 
-            .pet-card {
-                background: white;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                transition: all 0.3s ease;
-                transform: translateY(0);
-                display: flex;
-                flex-direction: column;
-                height: auto;
-                min-height: 400px;
-            }
-
-            .pet-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-            }
+            /*            .pet-card {
+                            background: white;
+                            border-radius: 12px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                            transition: all 0.3s ease;
+                            transform: translateY(0);
+                            display: flex;
+                            flex-direction: column;
+                            height: auto;
+                            min-height: 400px;
+                        }
+            
+                        .pet-card:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+                        }*/
 
             .card-image {
                 width: 100%;
@@ -307,12 +307,19 @@
             /* RESPONSIVE DESIGN MEJORADO */
             @media (max-width: 1200px) {
                 .cards-grid {
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 20px;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 18px;
                 }
             }
 
-            @media (max-width: 768px) {
+            @media (max-width: 900px) {
+                .cards-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 15px;
+                }
+            }
+
+            @media (max-width: 600px) {
                 .cards-grid {
                     grid-template-columns: 1fr;
                     gap: 15px;
@@ -344,39 +351,109 @@
                 .card-content {
                     padding: 12px;
                 }
+
+                .filters-section {
+                    padding: 20px 15px;
+                    border-radius: 15px;
+                }
+
+                .filters-grid {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                }
+
+                h4 {
+                    font-size: 1.6em;
+                    margin: 30px 0 20px 0;
+                }
+
+                h4::after {
+                    width: 60px;
+                }
             }
 
-            /* Estilos para los filtros */
+            /* Estilos para los filtros - DISEÑO AESTHETIC */
             .filters-section {
-                background-color: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                margin-bottom: 30px;
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+                padding: 25px;
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(90, 77, 124, 0.1);
+                margin-bottom: 40px;
+                border: 1px solid rgba(90, 77, 124, 0.1);
+                backdrop-filter: blur(10px);
             }
 
             .filters-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 20px;
+                align-items: end;
             }
 
             .filter-group {
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
+                position: relative;
             }
 
             .filter-group label {
                 color: #5a4d7c;
-                font-weight: bold;
+                font-weight: 600;
+                font-size: 0.9em;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 5px;
             }
 
-            .filter-group select, .filter-group input {
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
+            .filter-group select {
+                padding: 12px 16px;
+                border: 2px solid transparent;
+                border-radius: 12px;
                 outline: none;
+                background: white;
+                color: #333;
+                font-size: 0.95em;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                cursor: pointer;
+            }
+
+            .filter-group select:hover {
+                border-color: #9c7ca4;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(156, 124, 164, 0.15);
+            }
+
+            .filter-group select:focus {
+                border-color: #5a4d7c;
+                box-shadow: 0 0 0 3px rgba(90, 77, 124, 0.1);
+            }
+
+            .filter-group .btn {
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-size: 0.85em;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+
+            .filter-group .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(90, 77, 124, 0.25);
+            }
+
+            .filter-group .btn.secondary {
+                background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+                color: #5a4d7c;
+            }
+
+            .filter-group .btn.secondary:hover {
+                background: linear-gradient(135deg, #e8eaed 0%, #dadce0 100%);
             }
 
             /* Carrusel */
@@ -447,12 +524,30 @@
             }
 
             h4{
-                font-size: 1.5em;
+                font-size: 2em;
                 color: #5a4d7c;
-                font-weight: bold;
-                margin: 0;
+                font-weight: 700;
+                margin: 40px 0 30px 0;
                 text-align: center;
-                padding-bottom: 20px;
+                position: relative;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            h4::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 3px;
+                background: linear-gradient(135deg, #5a4d7c 0%, #9c7ca4 100%);
+                border-radius: 2px;
+            }
+
+            h4:first-of-type {
+                margin-top: 20px;
             }
 
             .spinner {
@@ -464,12 +559,48 @@
                 border-top-color: #5a4d7c;
                 animation: spin 1s ease-in-out infinite;
             }
+            .pet-card {
+                border: 2px solid #000;
+                border-radius: 20px;
+                padding: 20px;
+                width: 300px;
+                margin: 10px;
+                background-color: white;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .estado-label {
+                padding: 8px 16px;
+                font-weight: bold;
+                border-radius: 8px;
+                font-size: 0.9em;
+                margin-bottom: 10px;
+                display: block;
+                width: fit-content;
+            }
+
+            .verde {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .amarillo {
+                background-color: #ffc107;
+                color: black;
+            }
+
+            .rojo {
+                background-color: #dc3545;
+                color: white;
+            }
 
             @keyframes spin {
                 to {
                     transform: rotate(360deg);
                 }
             }
+
         </style>
     </head>
     <body>
@@ -497,7 +628,7 @@
 
                 <div class="nav-links" id="navLinks">
                     <a th:href="@{/home}" class="nav-link">Home</a>
-                    <a th:href="@{/seguimiento}" class="nav-link">Ver Seguimiento</a>
+                    
                     <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
                     <a href="/perfil" class="nav-link">Perfil</a>
                     <a href="/logout">Cerrar Sesión</a>
@@ -507,7 +638,7 @@
 
         <div class="container">
             <h4>Buscame!</h4>
-            
+
             <!-- Sección de filtros -->
             <div class="filters-section">
                 <form th:action="@{/home}" method="get" class="filters-grid">
@@ -578,66 +709,56 @@
                 </div>
             </div>
 
-            <!-- Grid de mascotas - ESTRUCTURA LIMPIA -->
+            <!-- Grid de mascotas -->
+            <!-- Grid de mascotas -->
             <div class="cards-grid">
+                <h4>¡Adoptanos!</h4>
                 <!-- Verifica si hay publicaciones -->
-                <div th:if="${publicaciones != null and !publicaciones.isEmpty()}" 
-                     th:each="publicacion : ${publicaciones}" 
-                     th:object="${publicacion}" 
-                     class="pet-card">
+                <div th:if="${not #lists.isEmpty(publicaciones)}" th:each="publicacion : ${publicaciones}" class="pet-card">
+                    <!-- Muestra el estado si existe -->
+                    <div th:if="${publicacion.estado != null}">
+                        <div th:if="${publicacion.estado.toString()} == 'EN_STOCK'" class="estado-label verde">En stock</div>
+                        <div th:if="${publicacion.estado.toString()} == 'EN_PROCESO'" class="estado-label amarillo">En proceso</div>
+                        <div th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="estado-label rojo">Adoptado</div>
+                    </div>
 
                     <!-- Imagen con validación -->
                     <div class="card-image">
-                        <img th:if="*{archivoFoto != null}" 
-                             th:src="@{'/imagenes/' + *{archivoFoto}}" 
-                             alt="Mascota">
-                        <img th:unless="*{archivoFoto != null}" 
-                             src="/images/default-pet.jpg" 
-                             alt="Mascota default">
+                        <img th:if="${publicacion.archivoFoto != null}" th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota">
+                        <img th:unless="${publicacion.archivoFoto != null}" src="/images/default-pet.jpg" alt="Mascota default">
                     </div>
 
                     <!-- Contenido con validación -->
                     <div class="card-content">
                         <div class="card-field">
                             <span class="card-label">Nombre</span>
-                            <span class="card-value" 
-                                  th:text="*{nombreMascota} ?: 'Sin nombre'"></span>
+                            <span class="card-value" th:text="${publicacion.nombreMascota} ?: 'Sin nombre'"></span>
                         </div>
 
                         <div class="card-field">
                             <span class="card-label">Especie</span>
-                            <span class="card-value" 
-                                  th:text="*{especie} ?: 'No especificado'"></span>
+                            <span class="card-value" th:text="${publicacion.especie} ?: 'No especificado'"></span>
                         </div>
 
                         <div class="card-field">
                             <span class="card-label">Edad</span>
-                            <span class="card-value" 
-                                  th:text="*{edad} ?: 'No especificado'"></span>
+                            <span class="card-value" th:text="${publicacion.edad} ?: 'No especificado'"></span>
                         </div>
 
                         <div class="card-field">
                             <span class="card-label">Descripción</span>
-                            <p class="card-description" 
-                               th:text="*{descripcion} ?: 'Sin descripción'"></p>
+                            <p class="card-description" th:text="${publicacion.descripcion} ?: 'Sin descripción'"></p>
                         </div>
 
                         <!-- Botón WhatsApp con validación -->
-                        <div th:if="*{telefono != null}">
-                            <form th:action="@{/seguimiento/iniciar/{publicacionId}(publicacionId=*{id_publicacion})}"
-                                  method="post">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                                <button type="submit" class="adopt-button">
-                                    Adoptar vía WhatsApp
-                                </button>
-                            </form>
-                        </div>
+                        <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" class="adopt-button" target="_blank">
+                            Adoptar vía WhatsApp
+                        </a>
                     </div>
                 </div>
 
                 <!-- Mensaje cuando no hay publicaciones -->
-                <div th:unless="${publicaciones != null and !publicaciones.isEmpty()}" 
-                     class="no-results">
+                <div th:unless="${not #lists.isEmpty(publicaciones)}" class="no-results">
                     No se encontraron publicaciones que coincidan con los filtros.
                 </div>
             </div>
@@ -695,3 +816,5 @@
         </script>
     </body>
 </html>
+
+

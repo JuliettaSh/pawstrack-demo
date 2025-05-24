@@ -189,6 +189,10 @@ public class AuthController {
         }
 
         model.addAttribute("publicaciones", publicaciones);
+        for (Publicacion p : publicaciones) {
+            System.out.println("Publicación: " + p.getId_publicacion() + " - Estado: " + p.getEstado());
+        }
+
         return "home";
     }
 //    @GetMapping("/home")//el usuario quiere ir al home (una vez autenticado) y muestra el html
