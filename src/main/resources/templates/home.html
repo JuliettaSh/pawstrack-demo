@@ -1083,6 +1083,7 @@
                 background-color: var(--primary); /* #5a4d7c */
                 color: white;
                 box-shadow: 0 2px 6px rgba(90, 77, 124, 0.25);
+                margin-bottom: 2%;
             }
 
             .btn-primary:hover {
@@ -1102,6 +1103,7 @@
                 color: var(--primary);
                 border: 1px solid var(--primary);
                 box-shadow: 0 1px 3px rgba(90, 77, 124, 0.1);
+                margin-right: 4%;
             }
 
             .btn-secondary:hover {
@@ -1446,7 +1448,6 @@
                                     <option value="">Todas</option>
                                     <option value="PERRO">Perro</option>
                                     <option value="GATO">Gato</option>
-                                    <option value="OTRO">Otro</option>
                                 </select>
                             </div>
                             <div class="filter-group">
@@ -1484,8 +1485,17 @@
                                 </select>
                             </div>
                             <div class="filter-group">
+                                <label for="estado" class="filter-label">Estado de adopción</label>
+                                <select id="estado" name="estado" class="filter-select">
+                                    <option value="">Todos los estados</option>
+                                    <option value="EN_STOCK">Disponible</option>
+                                    <option value="EN_PROCESO">En proceso</option>
+                                    <option value="ADOPTADO">Adoptado</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
                                 <button type="submit" class="btn btn-primary">Filtrar</button>
-                                <a href="/home" class="btn btn-secondary">Limpiar</a>
+                                <!-- <a href="/home" class="btn btn-secondary">Limpiar</a> -->
                             </div>
                         </form>
                     </div>
@@ -1513,14 +1523,14 @@
                 </section>
 
                 <section class="section">
-                    <h2 class="section-title">Mascotas disponibles</h2>
+                    <h2 class="section-title">Mascotas</h2>
 
                     <div class="pets-grid">
                         <div th:if="${not #lists.isEmpty(publicaciones)}" th:each="publicacion : ${publicaciones}" class="pet-card">
                             <div th:if="${publicacion.estado != null}">
                                 <span th:if="${publicacion.estado.toString()} == 'EN_STOCK'" class="pet-status status-available">Disponible</span>
                                 <span th:if="${publicacion.estado.toString()} == 'EN_PROCESO'" class="pet-status status-pending">En proceso</span>
-                                <span th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="pet-status status-adopted">Adoptado</span>
+                                <span th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="pet-status status-adopted">Adoptado ❤️</span>
                             </div>
 
                             <img th:if="${publicacion.archivoFoto != null}" th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota" class="pet-image">
