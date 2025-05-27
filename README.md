@@ -24,6 +24,7 @@ Plataforma web para la publicación y adopción de mascotas, con gestión de est
   - Estado de adopción
 - **CRUD completo** de publicaciones
 - **Autenticación de usuarios**
+- **CRUD completo** de usuarios
 - **Responsive design** - Compatible con móviles
 
 ## Tecnologías Utilizadas
