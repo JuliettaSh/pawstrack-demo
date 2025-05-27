@@ -2,7 +2,7 @@
 
 Plataforma web para la publicación y adopción de mascotas, con gestión de estados (Disponible/En proceso/Adoptado) y sistema de filtrado avanzado.
 
-## 📜 Índice
+## Índice
 1. [Características Principales](#características-principales)
 2. [Tecnologías Utilizadas](#tecnologías-utilizadas)
 3. [Deployment](#deployment)
