@@ -53,7 +53,8 @@ public class ServicioPublicacion {
     public List<Publicacion> findByFiltros(Publicacion.Especie especie, 
                                          Publicacion.Edad edad,
                                          Publicacion.Tamanio tamanio, 
-                                         String departamento) {
-        return publicacionRepository.findByFiltros(especie, edad, tamanio, departamento);
+                                         String departamento,
+                                         Publicacion.Estado estado) {
+        return publicacionRepository.findByFiltros(especie, edad, tamanio, departamento, estado);
     }
 }

@@ -33,11 +33,13 @@ public interface RepositorioPublicaciones extends JpaRepository<Publicacion, Lon
             + "(:especie IS NULL OR p.especie = :especie) AND "
             + "(:edad IS NULL OR p.edad = :edad) AND "
             + "(:tamanio IS NULL OR p.tamanio = :tamanio) AND "
-            + "(:departamento IS NULL OR p.departamento LIKE %:departamento%)")
+            + "(:departamento IS NULL OR p.departamento LIKE %:departamento%) AND " 
+            + "(:estado IS NULL OR p.estado = :estado)")
     List<Publicacion> findByFiltros(
             @Param("especie") Especie especie,
             @Param("edad") Edad edad,
             @Param("tamanio") Tamanio tamanio,
-            @Param("departamento") String departamento);
+            @Param("departamento") String departamento,
+            @Param("estado") Publicacion.Estado estado);
 
 }

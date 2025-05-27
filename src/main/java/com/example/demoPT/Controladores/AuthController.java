@@ -3,6 +3,7 @@ package com.example.demoPT.Controladores;
 import com.example.demoPT.Modelo.Publicacion;
 import com.example.demoPT.Modelo.Publicacion.Edad;
 import com.example.demoPT.Modelo.Publicacion.Especie;
+import com.example.demoPT.Modelo.Publicacion.Estado;
 import com.example.demoPT.Modelo.Publicacion.Tamanio;
 import com.example.demoPT.Modelo.Usuario;
 import com.example.demoPT.Repositorios.RepositorioPublicaciones;
@@ -147,6 +148,7 @@ public class AuthController {
             @RequestParam(required = false) String edad,
             @RequestParam(required = false) String tamanio,
             @RequestParam(required = false) String departamento,
+             @RequestParam(required = false) String estado,
             Model model) {
 
         // Inicializa listas vacías por defecto
@@ -169,11 +171,17 @@ public class AuthController {
                 tamanioEnum = Tamanio.valueOf(tamanio.toUpperCase());
             }
 
+            Estado estadoEnum = null;  // Nuevo enum para el estado
+            if (estado != null && !estado.isEmpty()) {
+                estadoEnum = Estado.valueOf(estado.toUpperCase());
+            }
+
             publicaciones = repo.findByFiltros(
                     especieEnum,
                     edadEnum,
                     tamanioEnum,
-                    departamento);
+                    departamento,
+                    estadoEnum);
 
         } catch (IllegalArgumentException e) {
             // Maneja error de conversión de enum
