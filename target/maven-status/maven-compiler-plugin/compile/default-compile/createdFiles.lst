@@ -18,6 +18,7 @@ com\example\demoPT\Excepciones\AccessDeniedException.class
 com\example\demoPT\Modelo\Publicacion$Tamanio.class
 com\example\demoPT\Modelo\CambioContrasenaDTO.class
 com\example\demoPT\Configuraciones\ConfiguracionSeguridad.class
+com\example\demoPT\Modelo\PaymentRequest.class
 com\example\demoPT\Modelo\PublicacionDto.class
 com\example\demoPT\Servicios\ServicioMFA.class
 com\example\demoPT\Controladores\ControladorPublicacion.class

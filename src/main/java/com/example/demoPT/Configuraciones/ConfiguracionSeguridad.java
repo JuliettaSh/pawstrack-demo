@@ -34,7 +34,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ConfiguracionSeguridad implements WebMvcConfigurer {
 
     private final RepositorioUsuario userRepository;
-
     // Inyección de dependencias correcta
     public ConfiguracionSeguridad(RepositorioUsuario userRepository) {
         this.userRepository = userRepository;

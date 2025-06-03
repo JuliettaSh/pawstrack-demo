@@ -14,9 +14,8 @@ import jakarta.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -148,7 +148,7 @@ public class AuthController {
             @RequestParam(required = false) String edad,
             @RequestParam(required = false) String tamanio,
             @RequestParam(required = false) String departamento,
-             @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String estado,
             Model model) {
 
         // Inicializa listas vacías por defecto
@@ -203,6 +203,35 @@ public class AuthController {
 
         return "home";
     }
+
+//    @GetMapping("/home/donacion")
+//    public String donacion() {
+//
+//        MercadoPago.SDK.setAccessToken("TEST-5965378008224797-052911-aaa8085a560849659a0aec03c4487cc5-1131801928");
+//
+//        PreferenceItemRequest itemRequest
+//                = PreferenceItemRequest.builder()
+//                        .id("1234")
+//                        .title("Games")
+//                        .description("PS5")
+//                        .pictureUrl("http://picture.com/PS5")
+//                        .categoryId("games")
+//                        .quantity(2)
+//                        .currencyId("BRL")
+//                        .unitPrice(new BigDecimal("4000"))
+//                        .build();
+//
+//        List<PreferenceItemRequest> items = new ArrayList<>();
+//        items.add(itemRequest);
+//
+//        PreferenceRequest preferenceRequest = PreferenceRequest.builder()
+//                .items(items).build();
+//
+//        PreferenceClient client = new PreferenceClient();
+//        Preference preference = client.create(preferenceRequest);
+//
+//        return null;
+//    }
 //    @GetMapping("/home")//el usuario quiere ir al home (una vez autenticado) y muestra el html
 //    public String mostrarHome(Model modelo) {
 //        
@@ -216,7 +245,6 @@ public class AuthController {
 //        }
 //        return "home";
 //    }
-
     @GetMapping("/index")//este es el apartado de "mis publicaciones" donde solo se ven las publicaciones que ese usuario hizo
     public String mostrarIndex(Model modelo, Principal principal) {
         // Obtener el nombre de usuario autenticado
